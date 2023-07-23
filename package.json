@@ -12,10 +12,15 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
+    "notebooks": [
       {
-        "command": "jsonpath-notebook.helloWorld",
-        "title": "Hello World"
+        "type": "jsonpath-notebook",
+        "displayName": "JSONPath Notebook",
+        "selector": [
+          {
+            "filenamePattern": "*.jsonpath-notebook"
+          }
+        ]
       }
     ]
   },

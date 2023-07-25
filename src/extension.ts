@@ -5,19 +5,20 @@ import path = require('path');
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
-		vscode.workspace.registerNotebookSerializer('jsonpath-notebook', new SampleSerializer())
+		vscode.workspace.registerNotebookSerializer('jsonpath-notebook', new SampleSerializer(), {
+			transientCellMetadata: {
+				test: true
+			}
+		})
 	);
 	context.subscriptions.push(new Controller());
 }
 
-interface RawNotebook {
-	cells: RawNotebookCell[];
-}
 
 interface RawNotebookCell {
 	source: string;
 	cell_type: 'code' | 'markdown';
-	selectedFileUri?: string;
+	metadata?: { [key: string]: any; }
 }
 
 class SampleSerializer implements vscode.NotebookSerializer {
@@ -29,7 +30,7 @@ class SampleSerializer implements vscode.NotebookSerializer {
 
 		let raw: RawNotebookCell[];
 		try {
-			raw = (<RawNotebook>JSON.parse(contents)).cells;
+			raw = (<RawNotebookCell[]>JSON.parse(contents));
 		} catch {
 			raw = [];
 		}
@@ -43,9 +44,7 @@ class SampleSerializer implements vscode.NotebookSerializer {
 					JSON.parse(item.source),
 					item.cell_type === 'code' ? 'JSONPath' : 'markdown',
 				)
-				cell.metadata = {
-					selectedFileUri: item.selectedFileUri
-				};
+				cell.metadata = item.metadata;
 				return cell;
 			}
 		);
@@ -65,7 +64,7 @@ class SampleSerializer implements vscode.NotebookSerializer {
 			contents.push({
 				cell_type: cell.kind === vscode.NotebookCellKind.Code ? 'code' : 'markdown',
 				source: JSON.stringify(cell.value),
-				selectedFileUri: cell.metadata?.selectedFileUri
+				metadata: cell.metadata
 			});
 		}
 
@@ -101,11 +100,11 @@ class Controller {
 		_controller: vscode.NotebookController
 	): void {
 		for (let cell of cells) {
-			this._doExecution(cell);
+			this._doExecution(cell, _notebook);
 		}
 	}
 
-	private async _doExecution(cell: vscode.NotebookCell): Promise<void> {
+	private async _doExecution(cell: vscode.NotebookCell, notebook: vscode.NotebookDocument): Promise<void> {
 		const execution = this._controller.createNotebookCellExecution(cell);
 		execution.executionOrder = ++this._executionOrder;
 		execution.start(Date.now()); // Keep track of elapsed time to execute cell.
@@ -155,6 +154,15 @@ class Controller {
 		}
 
 		const result = jsonPath(inputContent, cell.document.getText());
+
+		// create workspace edit to update tag
+		const edit = new vscode.WorkspaceEdit();
+		const nbEdit = vscode.NotebookEdit.updateCellMetadata(cell.index, {
+			...cell.metadata,
+			selectedFileUri: selectedFileUri?.fsPath
+		});
+		edit.set(cell.notebook.uri, [nbEdit]);
+		await vscode.workspace.applyEdit(edit);
 
 		execution.replaceOutput([
 			new vscode.NotebookCellOutput([

@@ -1,5 +1,6 @@
 {
   "name": "jsonpath-notebook",
+  "publisher": "tschranz",
   "displayName": "JSONPath Notebook",
   "description": "Adding support for JSONPath expressions inside VS Code Notebooks",
   "version": "0.0.1",

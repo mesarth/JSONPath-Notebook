@@ -11,7 +11,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       const selectedFileUri = vscode.Uri.parse(selectedFileUriPath);
 
       const item = new vscode.NotebookCellStatusBarItem(path.basename(selectedFileUri.fsPath), vscode.NotebookCellStatusBarAlignment.Right);
-      item.tooltip = "This file is used to evaulate the JSONPath expression on";
+      item.tooltip = selectedFileUri.path;
       item.command = {
         title: "Change Context",
         command: `${EXTENSION_ID}.changeContext`,

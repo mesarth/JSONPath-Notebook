@@ -46,8 +46,6 @@ export class Serializer implements vscode.NotebookSerializer {
     let contents: RawNotebookCell[] = [];
 
     for (const cell of data.cells) {
-      console.log(cell);
-
       contents.push({
         cell_type: cell.kind === vscode.NotebookCellKind.Code ? 'code' : 'markdown',
         source: JSON.stringify(cell.value),

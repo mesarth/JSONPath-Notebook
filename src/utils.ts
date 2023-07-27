@@ -98,3 +98,10 @@ export const showChangeContextQuickPick = async (cellIndex: number, autoChoose =
   quickpick.dispose();
   return
 }
+
+export const openCellOutput = async (cellIndex: number): Promise<void> => {
+  const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
+  const content = new TextDecoder().decode(cell?.outputs[0].items[0].data);
+  const document = await vscode.workspace.openTextDocument({ language: 'json', content });
+  await vscode.window.showTextDocument(document);
+}

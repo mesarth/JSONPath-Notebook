@@ -19,6 +19,18 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       }
       items.push(item);
     }
+
+    if (cell.outputs.length > 0) {
+      const item = new vscode.NotebookCellStatusBarItem('Open output in new tab', vscode.NotebookCellStatusBarAlignment.Left);
+      item.tooltip = 'Open the JSON result of the query in a new tab';
+      item.command = {
+        title: "Open the JSON result of the query in a new tab",
+        command: `${EXTENSION_ID}.openOutput`,
+        arguments: [cell.index]
+      }
+      items.push(item);
+    }
+
     return items;
   }
 }

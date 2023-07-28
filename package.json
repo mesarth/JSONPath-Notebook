@@ -28,9 +28,18 @@
       {
         "command": "jsonpath-notebook.openEmptyNotebook",
         "icon": "$(file)",
-        "title": "JSONPath: Open an empty Notebook"
+        "title": "JSONPath: Open an empty Notebook",
+        "shortTitle": "JSONPath Notebook",
+        "category": "Notebook"
       }
-    ]
+    ],
+    "menus": {
+      "file/newFile": [
+        {
+          "command": "jsonpath-notebook.openEmptyNotebook"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",

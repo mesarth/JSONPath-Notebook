@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { Serializer } from './Serializer';
 import { EXTENSION_ID, NOTEBOOK_TYPE, openCellOutput, openEmptyNotebook, showChangeContextQuickPick } from './utils';
-import { Controller } from './controller';
+import { Controller } from './Controller';
 import { CellStatusProvider } from './CellStatusProvider';
 
 

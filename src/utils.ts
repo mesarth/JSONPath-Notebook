@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 
 export const NOTEBOOK_TYPE = 'jsonpath-notebook';
 export const LANGUAGE_ID = 'JSONPath';
-export const EXTENSION_ID = 'schranz.jsonpath-notebook';
+export const EXTENSION_ID = 'jsonpath-notebook';
 
 
 class FileItem implements vscode.QuickPickItem {
@@ -104,4 +104,21 @@ export const openCellOutput = async (cellIndex: number): Promise<void> => {
   const content = new TextDecoder().decode(cell?.outputs[0].items[0].data);
   const document = await vscode.workspace.openTextDocument({ language: 'json', content });
   await vscode.window.showTextDocument(document);
+}
+
+export const openEmptyNotebook = async (): Promise<void> => {
+  const notebookData = new vscode.NotebookData([
+    {
+      kind: vscode.NotebookCellKind.Markup,
+      languageId: 'markdown',
+      value: '# Welcome to JSONPath Notebooks!\n**To get started:** Add your JSONPath query in the code cell below and press run.\n\nTo get rid of this introduction text, select the trash bin icon on the top right. You can add you own text cells to the notebook by clicking the *Markdown*-Button on the top left.\n\nFor more information check out the [README](https://github.com/mesarth/jsonpath-notebook).'
+    },
+    {
+      kind: vscode.NotebookCellKind.Code,
+      languageId: LANGUAGE_ID,
+      value: '$.store.book[*].author'
+    }
+  ]);
+  const document = await vscode.workspace.openNotebookDocument(NOTEBOOK_TYPE, notebookData);
+  await vscode.window.showNotebookDocument(document);
 }

@@ -13,6 +13,23 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "JSONPath",
+        "aliases": [
+          "JSONPath"
+        ],
+        "extensions": [],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "JSONPath",
+        "scopeName": "source.jsonpath",
+        "path": "./syntaxes/jsonpath.tmLanguage.json"
+      }
+    ],
     "notebooks": [
       {
         "type": "jsonpath-notebook",

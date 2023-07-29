@@ -40,14 +40,14 @@ const changeContext = async (cellIndex: number, context: vscode.Uri) => {
     edit.set(cell.notebook.uri, [nbEdit]);
     await vscode.workspace.applyEdit(edit);
   }
-}
+};
 
 export const showJsonFileSelector = async () => {
   const filePickerOptions: vscode.OpenDialogOptions = {
     title: 'Choose a .json file as input for the query',
     canSelectMany: false,
     filters: {
-      'JSON': ['json']
+      'json': ['json']
     }
   };
 
@@ -55,14 +55,14 @@ export const showJsonFileSelector = async () => {
   if (result && result.length > 0) {
     return result[0];
   }
-  return undefined
-}
+  return undefined;
+};
 
 export const showChangeContextQuickPick = async (cellIndex: number, autoChoose = false): Promise<void> => {
   const inputTabs = vscode.window.tabGroups.all.flatMap(({ tabs }) => tabs.map(tab => tab.input)).filter(input => input instanceof vscode.TabInputText) as vscode.TabInputText[];
   const jsonTabs = inputTabs.filter((input) => path.extname(input.uri.fsPath) === '.json');
 
-  if (autoChoose && jsonTabs.length == 1) {
+  if (autoChoose && jsonTabs.length === 1) {
     await changeContext(cellIndex, jsonTabs[0].uri);
     return;
   }
@@ -71,7 +71,7 @@ export const showChangeContextQuickPick = async (cellIndex: number, autoChoose =
   const quickpick = vscode.window.createQuickPick<FileItem | SeparatorItem | OpenFileItem>();
   quickpick.busy = true;
   quickpick.matchOnDescription = true;
-  quickpick.title = 'JSONPath Notebook - Change context'
+  quickpick.title = 'JSONPath Notebook - Change context';
   quickpick.placeholder = 'Choose a .json file as input for the query';
   quickpick.show();
   quickpick.items = jsonTabs.map(tab => new FileItem(tab.uri, vscode.window.activeNotebookEditor?.notebook.uri ?? tab.uri));
@@ -79,7 +79,7 @@ export const showChangeContextQuickPick = async (cellIndex: number, autoChoose =
     if (item instanceof FileItem) {
       return item.uri.fsPath === cell?.metadata.selectedFileUri;
     }
-    return false
+    return false;
   });
   quickpick.items = [...quickpick.items, new SeparatorItem, new OpenFileItem];
   quickpick.busy = false;
@@ -96,15 +96,15 @@ export const showChangeContextQuickPick = async (cellIndex: number, autoChoose =
     await changeContext(cellIndex, uri);
   }
   quickpick.dispose();
-  return
-}
+  return;
+};
 
 export const openCellOutput = async (cellIndex: number): Promise<void> => {
   const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
   const content = new TextDecoder().decode(cell?.outputs[0].items[0].data);
   const document = await vscode.workspace.openTextDocument({ language: 'json', content });
   await vscode.window.showTextDocument(document);
-}
+};
 
 export const openEmptyNotebook = async (): Promise<void> => {
   const notebookData = new vscode.NotebookData([
@@ -121,4 +121,4 @@ export const openEmptyNotebook = async (): Promise<void> => {
   ]);
   const document = await vscode.workspace.openNotebookDocument(NOTEBOOK_TYPE, notebookData);
   await vscode.window.showNotebookDocument(document);
-}
+};

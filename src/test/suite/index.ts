@@ -5,8 +5,9 @@ import * as glob from 'glob';
 export function run(): Promise<void> {
 	// Create the mocha test
 	const mocha = new Mocha({
-		ui: 'tdd',
-		color: true
+		ui: 'bdd',
+		color: true,
+		timeout: 10000
 	});
 
 	const testsRoot = path.resolve(__dirname, '..');

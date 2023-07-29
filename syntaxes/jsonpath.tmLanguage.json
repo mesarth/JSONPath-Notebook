@@ -34,7 +34,10 @@
         }
       ]
     },
-    "DotChild": {},
+    "DotChild": {
+      "name": "keyword.operator",
+      "match": "\\."
+    },
     "BracketChildren": {},
     "RecursiveDescentChildren": {}
   }

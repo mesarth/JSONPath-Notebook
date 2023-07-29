@@ -29,8 +29,11 @@ describe('Extension Test Suite', async () => {
 
 	it('Run basic query', async () => {
 		const workspacePath = __dirname + '../../../../';
-
 		const inputDocumentPath = path.join(workspacePath, 'src/test/suite/files/input/bookstore.json');
+		//if windows replace / with \
+		if (process.platform === 'win32') {
+			inputDocumentPath.replace(/\//g, '\\');
+		}
 		await vscode.workspace.openTextDocument(inputDocumentPath);
 
 		//prepare notebook
@@ -59,6 +62,10 @@ describe('Extension Test Suite', async () => {
 
 		//get expected output content from  from ./files/output/basic.json
 		const expectedDocumentPath = path.join(workspacePath, 'src/test/suite/files/output/basic.json');
+		//if windows replace / with \
+		if (process.platform === 'win32') {
+			expectedDocumentPath.replace(/\//g, '\\');
+		}
 		const expectedOutput = await vscode.workspace.openTextDocument(expectedDocumentPath);
 		const expectedOutputContent = expectedOutput.getText();
 

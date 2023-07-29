@@ -3,26 +3,65 @@ import * as assert from 'assert';
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
-import { EXTENSION_ID, NOTEBOOK_TYPE } from '../../utils';
+import { EXTENSION_ID, LANGUAGE_ID, NOTEBOOK_TYPE } from '../../utils';
+import path = require('path');
 // import * as myExtension from '../../extension';
 
-suite('Extension Test Suite', async () => {
+describe('Extension Test Suite', async () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
-	suite('Command[openEmptyNotebook]', async () => {
+	describe('Command[openEmptyNotebook]', async () => {
 		beforeEach(async () => {
 			//close all open tabs
 			await vscode.commands.executeCommand('workbench.action.closeAllEditors');
 		});
 
-		test('is correct NotebookType', async () => {
+		it('is correct NotebookType', async () => {
 			await vscode.commands.executeCommand(`${EXTENSION_ID}.openEmptyNotebook`);
 			assert.equal(NOTEBOOK_TYPE, vscode.window.activeNotebookEditor?.notebook.notebookType);
 		});
 
-		test('is correct NotebookType', async () => {
+		it('is correct NotebookType', async () => {
 			await vscode.commands.executeCommand(`${EXTENSION_ID}.openEmptyNotebook`);
 			assert.equal(2, vscode.window.activeNotebookEditor?.notebook.cellCount);
 		});
+	});
+
+	it('Run basic query', async () => {
+		const workspacePath = __dirname + '../../../../';
+
+		const inputDocumentPath = path.join(workspacePath, 'src/test/suite/files/input/bookstore.json');
+		await vscode.workspace.openTextDocument(inputDocumentPath);
+
+		//prepare notebook
+		const notebookData = new vscode.NotebookData([
+			{
+				kind: vscode.NotebookCellKind.Code,
+				languageId: LANGUAGE_ID,
+				value: '$..book[?(@.price<10)]',
+				metadata: {
+					"selectedFileUri": inputDocumentPath
+				}
+			}
+		]);
+		const document = await vscode.workspace.openNotebookDocument(NOTEBOOK_TYPE, notebookData);
+		await vscode.window.showNotebookDocument(document);
+
+		//execute first cell
+		await vscode.commands.executeCommand('notebook.execute', document.uri);
+
+		//delay is needed afaik there is no way to check if a cell is finished executing
+		const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+		await delay(500);
+
+		//check output
+		const output = new TextDecoder().decode(vscode.window.activeNotebookEditor?.notebook.cellAt(0).outputs[0].items[0].data);
+
+		//get expected output content from  from ./files/output/basic.json
+		const expectedDocumentPath = path.join(workspacePath, 'src/test/suite/files/output/basic.json');
+		const expectedOutput = await vscode.workspace.openTextDocument(expectedDocumentPath);
+		const expectedOutputContent = expectedOutput.getText();
+
+		assert.equal(expectedOutputContent, output);
 	});
 });

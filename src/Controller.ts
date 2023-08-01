@@ -45,6 +45,23 @@ export class Controller {
     }
 
     let selectedFileUri = vscode.Uri.parse(cell.metadata.selectedFileUri);
+    //check if file still exists
+    try {
+      await vscode.workspace.fs.stat(selectedFileUri);
+    } catch {
+      //file does not exist, ask user to select a different file
+      const result = await vscode.window.showErrorMessage(`File ${selectedFileUri.fsPath} does not exist`, { modal: true, detail: 'The context file for this cell was not found at the saved path. It was probably moved or deleted.' }, 'Select different file');
+      if (result) {
+        await showChangeContextQuickPick(cell.index);
+        selectedFileUri = vscode.Uri.parse(cell.metadata.selectedFileUri);
+      }
+      else {
+        //canceled by user, exit execution
+        execution.end(false, Date.now());
+        return;
+      }
+    }
+
     const document = await vscode.workspace.openTextDocument(selectedFileUri);
     inputContent = JSON.parse(document.getText());
 
@@ -56,6 +73,7 @@ export class Controller {
       ])
     ]);
     execution.end(true, Date.now());
+
   }
 
   dispose(): any { }

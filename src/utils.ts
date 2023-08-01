@@ -66,6 +66,13 @@ export const showChangeContextQuickPick = async (cellIndex: number, autoChoose =
     await changeContext(cellIndex, jsonTabs[0].uri);
     return;
   }
+  else if (jsonTabs.length === 0) {
+    const uri = await showJsonFileSelector();
+    if (uri) {
+      await changeContext(cellIndex, uri);
+    }
+    return;
+  }
 
   const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
   const quickpick = vscode.window.createQuickPick<FileItem | SeparatorItem | OpenFileItem>();

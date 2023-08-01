@@ -15,5 +15,5 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(NOTEBOOK_TYPE, new CellStatusProvider())
 	);
 
-	vscode.window.showInformationMessage('JSONPath Notebooks is now active. Create a new .jsonpath-notebook file to start', 'Create new notebook').then(() => openNewNotebook());
+	vscode.window.showInformationMessage('JSONPath Notebooks is now active. Create a new .jsonpath-notebook file to start', 'Create new notebook').then(selected => selected && openNewNotebook());
 }

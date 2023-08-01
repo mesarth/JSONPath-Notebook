@@ -1,8 +1,7 @@
-import * as assert from 'assert';
-
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
+import { assert, expect } from 'chai';
 import { EXTENSION_ID, LANGUAGE_ID, NOTEBOOK_TYPE } from '../../utils';
 import path = require('path');
 // import * as myExtension from '../../extension';
@@ -61,6 +60,6 @@ describe('Extension Test Suite', async () => {
 		const expectedOutput = await vscode.workspace.openTextDocument(expectedDocumentPath);
 		const expectedOutputContent = expectedOutput.getText();
 
-		assert.equal(expectedOutputContent, output);
+		expect(JSON.parse(expectedOutputContent)).to.deep.equal(JSON.parse(output));
 	});
 });

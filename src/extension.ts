@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Serializer } from './Serializer';
-import { EXTENSION_ID, NOTEBOOK_TYPE, openCellOutput, openEmptyNotebook, showChangeContextQuickPick } from './utils';
+import { EXTENSION_ID, NOTEBOOK_TYPE, openCellOutput, openNewNotebook, showChangeContextQuickPick } from './utils';
 import { Controller } from './Controller';
 import { CellStatusProvider } from './CellStatusProvider';
 
@@ -11,9 +11,9 @@ export function activate(context: vscode.ExtensionContext) {
 		new Controller(),
 		vscode.commands.registerCommand(`${EXTENSION_ID}.changeContext`, (cellIndex: number) => showChangeContextQuickPick(cellIndex)),
 		vscode.commands.registerCommand(`${EXTENSION_ID}.openOutput`, (cellIndex: number) => openCellOutput(cellIndex)),
-		vscode.commands.registerCommand(`${EXTENSION_ID}.openEmptyNotebook`, () => openEmptyNotebook()),
+		vscode.commands.registerCommand(`${EXTENSION_ID}.openNewNotebook`, () => openNewNotebook()),
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(NOTEBOOK_TYPE, new CellStatusProvider())
 	);
 
-	vscode.window.showInformationMessage('JSONPath Notebooks is now active. Create a new .jsonpath-notebook file to start', 'Create new notebook').then(() => openEmptyNotebook());
+	vscode.window.showInformationMessage('JSONPath Notebooks is now active. Create a new .jsonpath-notebook file to start', 'Create new notebook').then(() => openNewNotebook());
 }

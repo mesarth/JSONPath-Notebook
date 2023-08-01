@@ -16,7 +16,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
         title: "Change Context",
         command: `${EXTENSION_ID}.changeContext`,
         arguments: [cell.index]
-      }
+      };
       items.push(item);
     }
 
@@ -27,7 +27,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
         title: "Open the JSON result of the query in a new tab",
         command: `${EXTENSION_ID}.openOutput`,
         arguments: [cell.index]
-      }
+      };
       items.push(item);
     }
 

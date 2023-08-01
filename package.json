@@ -43,17 +43,16 @@
     ],
     "commands": [
       {
-        "command": "jsonpath-notebook.openEmptyNotebook",
+        "command": "jsonpath-notebook.openNewNotebook",
         "icon": "$(file)",
-        "title": "JSONPath: Open an empty Notebook",
-        "shortTitle": "JSONPath Notebook",
-        "category": "Notebook"
+        "title": "JSONPath Notebook: Open new Notebook",
+        "shortTitle": "JSONPath Notebook"
       }
     ],
     "menus": {
       "file/newFile": [
         {
-          "command": "jsonpath-notebook.openEmptyNotebook"
+          "command": "jsonpath-notebook.openNewNotebook"
         }
       ]
     }

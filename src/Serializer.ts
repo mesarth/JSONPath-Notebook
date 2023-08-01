@@ -4,7 +4,7 @@ import { LANGUAGE_ID } from './utils';
 
 interface RawNotebookCell {
   source: string;
-  cell_type: 'code' | 'markdown';
+  cellType: 'code' | 'markdown';
   metadata?: { [key: string]: any; }
 }
 
@@ -25,12 +25,12 @@ export class Serializer implements vscode.NotebookSerializer {
     const cells = raw.map(
       item => {
         const cell = new vscode.NotebookCellData(
-          item.cell_type === 'code'
+          item.cellType === 'code'
             ? vscode.NotebookCellKind.Code
             : vscode.NotebookCellKind.Markup,
           JSON.parse(item.source),
-          item.cell_type === 'code' ? LANGUAGE_ID : 'markdown',
-        )
+          item.cellType === 'code' ? LANGUAGE_ID : 'markdown',
+        );
         cell.metadata = item.metadata;
         return cell;
       }
@@ -47,7 +47,7 @@ export class Serializer implements vscode.NotebookSerializer {
 
     for (const cell of data.cells) {
       contents.push({
-        cell_type: cell.kind === vscode.NotebookCellKind.Code ? 'code' : 'markdown',
+        cellType: cell.kind === vscode.NotebookCellKind.Code ? 'code' : 'markdown',
         source: JSON.stringify(cell.value),
         metadata: cell.metadata
       });

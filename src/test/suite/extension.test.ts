@@ -10,19 +10,19 @@ import path = require('path');
 describe('Extension Test Suite', async () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
-	describe('Command[openEmptyNotebook]', async () => {
+	describe('Command[openNewNotebook]', async () => {
 		beforeEach(async () => {
 			//close all open tabs
 			await vscode.commands.executeCommand('workbench.action.closeAllEditors');
 		});
 
 		it('is correct NotebookType', async () => {
-			await vscode.commands.executeCommand(`${EXTENSION_ID}.openEmptyNotebook`);
+			await vscode.commands.executeCommand(`${EXTENSION_ID}.openNewNotebook`);
 			assert.equal(NOTEBOOK_TYPE, vscode.window.activeNotebookEditor?.notebook.notebookType);
 		});
 
 		it('is correct NotebookType', async () => {
-			await vscode.commands.executeCommand(`${EXTENSION_ID}.openEmptyNotebook`);
+			await vscode.commands.executeCommand(`${EXTENSION_ID}.openNewNotebook`);
 			assert.equal(2, vscode.window.activeNotebookEditor?.notebook.cellCount);
 		});
 	});

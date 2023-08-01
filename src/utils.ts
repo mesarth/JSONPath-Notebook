@@ -106,7 +106,7 @@ export const openCellOutput = async (cellIndex: number): Promise<void> => {
   await vscode.window.showTextDocument(document);
 };
 
-export const openEmptyNotebook = async (): Promise<void> => {
+export const openNewNotebook = async (): Promise<void> => {
   const notebookData = new vscode.NotebookData([
     {
       kind: vscode.NotebookCellKind.Markup,

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import jsonPath from './lib/jsonpath'
+import jsonPath from './lib/jsonpath';
 import path = require('path');
 import { LANGUAGE_ID, NOTEBOOK_TYPE, showChangeContextQuickPick } from './utils';
 

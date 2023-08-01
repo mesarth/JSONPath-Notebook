@@ -1,71 +1,48 @@
-# jsonpath-notebook README
+# JSONPath Notebook for Visual Studio Code
 
-This is the README for your extension "jsonpath-notebook". After writing up a brief description, we recommend including the following sections.
+A [Visual Studio Code Extension](https://marketplace.visualstudio.com/) which allows you to use JSONPath queries inside Notebooks.
+
+[![Actions Status](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml/badge.svg)](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml)
+
+INSERT GIF?
 
 ## Features
+- Quickly run JSONPath queries on your JSON files
+- Annotate queries using Markdown cells
+- allows you to use [different JSON input files for each cell](#switching-context-input-file)
+- open query result in new tab to save or edit
+- output and input file context get saved with the notebook
+- supports VS Code web and remote environments
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
-For example if there is an image subfolder under your extension project workspace:
+## Installation
+Install extension through the VS Code marketplace. 
+[https://marketplace.visualstudio.com/](https://marketplace.visualstudio.com/). 
 
-\!\[feature X\]\(images/feature-x.png\)
+Or just search for ``JSONPath Notebook``
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Usage
 
-## Requirements
+INSERT GIF?
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Creating a new Notebook
+After installation a popup should appear, asking you to create a new notebook.
+
+You can also create a new notebook by using the command ``JSONPath Notebook: Open new Notebook`` or creating a new file ending with ``.jsonpath-notebook``
+
+### Switching context (input file)
+On first execution of a cell the context is determined as follows
+- by default the JSON file opened in the current window will be used
+- if there is more than one JSON file opened in the editor, a popup appears asking to select a file
+  - there is also an option in this popup to select a not opened file
+
+The chosen context (input file) gets saved inside the notebook (per cell) and can be changed any time by clicking on 
 
 ## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+WIP
 
 ## Release Notes
+See [Changelog.md](Changelog.md)
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+## Issue Reporting and Feature Requests
+Found a bug? Have a feature request? Reach out on our [GitHub Issues page](https://github.com/mesarth/JSONPath-Notebook/).

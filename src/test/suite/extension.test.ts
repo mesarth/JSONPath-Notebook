@@ -29,12 +29,8 @@ describe('Extension Test Suite', async () => {
 
 	it('Run basic query', async () => {
 		const workspacePath = __dirname + '../../../../';
-		const inputDocumentPath = path.join(workspacePath, 'src/test/suite/files/input/bookstore.json');
-		//if windows replace / with \
-		if (process.platform === 'win32') {
-			inputDocumentPath.replace(/\//g, '\\');
-		}
-		await vscode.workspace.openTextDocument(inputDocumentPath);
+		const inputDocumentUri = vscode.Uri.file(path.join(workspacePath, 'src/test/suite/files/input/bookstore.json'));
+		await vscode.workspace.openTextDocument(inputDocumentUri);
 
 		//prepare notebook
 		const notebookData = new vscode.NotebookData([
@@ -43,7 +39,7 @@ describe('Extension Test Suite', async () => {
 				languageId: LANGUAGE_ID,
 				value: '$..book[?(@.price<10)]',
 				metadata: {
-					"selectedFileUri": inputDocumentPath
+					"selectedFileUri": inputDocumentUri.path
 				}
 			}
 		]);
@@ -62,10 +58,6 @@ describe('Extension Test Suite', async () => {
 
 		//get expected output content from  from ./files/output/basic.json
 		const expectedDocumentPath = path.join(workspacePath, 'src/test/suite/files/output/basic.json');
-		//if windows replace / with \
-		if (process.platform === 'win32') {
-			expectedDocumentPath.replace(/\//g, '\\');
-		}
 		const expectedOutput = await vscode.workspace.openTextDocument(expectedDocumentPath);
 		const expectedOutputContent = expectedOutput.getText();
 

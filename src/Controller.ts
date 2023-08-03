@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 import jsonPath from './lib/jsonpath';
-import path = require('path');
 import { LANGUAGE_ID, NOTEBOOK_TYPE, showChangeContextQuickPick } from './utils';
+import { join } from 'path';
+const { Worker, isMainThread, parentPort, workerData, } = require('worker_threads');
 
 export class Controller {
   readonly controllerId = 'jsonpath-notebook-controller-id';
@@ -21,6 +22,7 @@ export class Controller {
     this._controller.supportedLanguages = this.supportedLanguages;
     this._controller.supportsExecutionOrder = true;
     this._controller.executeHandler = this._execute.bind(this);
+
   }
 
   private _execute(
@@ -37,6 +39,7 @@ export class Controller {
     const execution = this._controller.createNotebookCellExecution(cell);
     execution.executionOrder = ++this._executionOrder;
     execution.start(Date.now()); // Keep track of elapsed time to execute cell.
+
 
     let inputContent = {};
 
@@ -65,14 +68,27 @@ export class Controller {
     const document = await vscode.workspace.openTextDocument(selectedFileUri);
     inputContent = JSON.parse(document.getText());
 
-    const result = jsonPath(inputContent, cell.document.getText());
+    if (isMainThread) {
+      const worker = new Worker(join(__filename, '../worker.js'), {
+        workerData: {
+          input: inputContent,
+          expression: cell.document.getText()
+        }
+      });
+      worker.on('message', (result: any) => {
+        execution.replaceOutput([
+          new vscode.NotebookCellOutput([
+            vscode.NotebookCellOutputItem.json(result)
+          ])
+        ]);
+        execution.end(true, Date.now());
+      });
 
-    execution.replaceOutput([
-      new vscode.NotebookCellOutput([
-        vscode.NotebookCellOutputItem.json(result)
-      ])
-    ]);
-    execution.end(true, Date.now());
+      execution.token.onCancellationRequested(() => {
+        worker.terminate;
+        execution.end(false, Date.now());
+      });
+    }
 
   }
 

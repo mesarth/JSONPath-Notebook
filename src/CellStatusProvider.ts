@@ -10,10 +10,10 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
     if (selectedFileUriPath) {
       const selectedFileUri = vscode.Uri.parse(selectedFileUriPath);
 
-      const item = new vscode.NotebookCellStatusBarItem(path.basename(selectedFileUri.fsPath), vscode.NotebookCellStatusBarAlignment.Right);
+      const item = new vscode.NotebookCellStatusBarItem(`$(file) ${path.basename(selectedFileUri.fsPath)}`, vscode.NotebookCellStatusBarAlignment.Right);
       item.tooltip = selectedFileUri.path;
       item.command = {
-        title: "Change Context",
+        title: "$Change Context",
         command: `${EXTENSION_ID}.changeContext`,
         arguments: [cell.index]
       };
@@ -21,7 +21,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
     }
 
     if (cell.outputs.length > 0) {
-      const item = new vscode.NotebookCellStatusBarItem('Open output in new tab', vscode.NotebookCellStatusBarAlignment.Left);
+      const item = new vscode.NotebookCellStatusBarItem('$(output) Open output in new tab', vscode.NotebookCellStatusBarAlignment.Left);
       item.tooltip = 'Open the JSON result of the query in a new tab';
       item.command = {
         title: "Open the JSON result of the query in a new tab",

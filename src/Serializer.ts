@@ -6,6 +6,7 @@ interface RawNotebookCell {
   source: string;
   cellType: 'code' | 'markdown';
   metadata?: { [key: string]: any; }
+  output?: Object
 }
 
 export class Serializer implements vscode.NotebookSerializer {
@@ -32,6 +33,9 @@ export class Serializer implements vscode.NotebookSerializer {
           item.cellType === 'code' ? LANGUAGE_ID : 'markdown',
         );
         cell.metadata = item.metadata;
+        if (item.output) {
+          cell.outputs = [new vscode.NotebookCellOutput([vscode.NotebookCellOutputItem.json(item.output)])];
+        }
         return cell;
       }
     );
@@ -46,10 +50,17 @@ export class Serializer implements vscode.NotebookSerializer {
     let contents: RawNotebookCell[] = [];
 
     for (const cell of data.cells) {
+      const rawOutput = cell?.outputs?.at(0)?.items[0].data;
+      let output = undefined;
+      if (rawOutput) {
+        output = JSON.parse(new TextDecoder().decode(rawOutput));
+      }
+
       contents.push({
         cellType: cell.kind === vscode.NotebookCellKind.Code ? 'code' : 'markdown',
         source: JSON.stringify(cell.value),
-        metadata: cell.metadata
+        metadata: cell.metadata,
+        output
       });
     }
 

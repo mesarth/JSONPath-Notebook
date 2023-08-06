@@ -6,29 +6,33 @@ import { EXTENSION_ID, LANGUAGE_ID, NOTEBOOK_TYPE } from '../../utils';
 import path = require('path');
 // import * as myExtension from '../../extension';
 
+const getTestFileUri = (relativePath: string) => {
+	const workspacePath = __dirname + '../../../..//src/test/suite/files/';
+	return vscode.Uri.file(path.join(workspacePath, relativePath));
+};
+
 describe('Extension Test Suite', async () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
-	describe('Command[openNewNotebook]', async () => {
-		beforeEach(async () => {
-			//close all open tabs
-			await vscode.commands.executeCommand('workbench.action.closeAllEditors');
-		});
+	beforeEach(async () => {
+		//close all open tabs
+		await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+	});
 
+	describe('Command[openNewNotebook]', async () => {
 		it('is correct NotebookType', async () => {
 			await vscode.commands.executeCommand(`${EXTENSION_ID}.openNewNotebook`);
 			assert.equal(NOTEBOOK_TYPE, vscode.window.activeNotebookEditor?.notebook.notebookType);
 		});
 
-		it('is correct NotebookType', async () => {
+		it('is correct Notebook', async () => {
 			await vscode.commands.executeCommand(`${EXTENSION_ID}.openNewNotebook`);
 			assert.equal(2, vscode.window.activeNotebookEditor?.notebook.cellCount);
 		});
 	});
 
 	it('Run basic query', async () => {
-		const workspacePath = __dirname + '../../../../';
-		const inputDocumentUri = vscode.Uri.file(path.join(workspacePath, 'src/test/suite/files/input/bookstore.json'));
+		const inputDocumentUri = getTestFileUri('/input/bookstore.json');
 		await vscode.workspace.openTextDocument(inputDocumentUri);
 
 		//prepare notebook
@@ -50,13 +54,13 @@ describe('Extension Test Suite', async () => {
 
 		//delay is needed afaik there is no way to check if a cell is finished executing
 		const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
-		await delay(500);
+		await delay(1000);
 
 		//check output
 		const output = new TextDecoder().decode(vscode.window.activeNotebookEditor?.notebook.cellAt(0).outputs[0].items[0].data);
 
 		//get expected output content from  from ./files/output/basic.json
-		const expectedDocumentPath = path.join(workspacePath, 'src/test/suite/files/output/basic.json');
+		const expectedDocumentPath = getTestFileUri('output/basic.json');
 		const expectedOutput = await vscode.workspace.openTextDocument(expectedDocumentPath);
 		const expectedOutputContent = expectedOutput.getText();
 

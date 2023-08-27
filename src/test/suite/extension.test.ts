@@ -11,6 +11,8 @@ const getTestFileUri = (relativePath: string) => {
 	return vscode.Uri.file(path.join(workspacePath, relativePath));
 };
 
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
 describe('Extension Test Suite', async () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
@@ -29,6 +31,20 @@ describe('Extension Test Suite', async () => {
 			await vscode.commands.executeCommand(`${EXTENSION_ID}.openNewNotebook`);
 			assert.equal(2, vscode.window.activeNotebookEditor?.notebook.cellCount);
 		});
+	});
+
+	it('Command[openOutput]', async () => {
+		const uri = getTestFileUri('/notebooks/cellOutput.jsonpath-notebook');
+		const document = await vscode.workspace.openNotebookDocument(uri);
+
+		await vscode.window.showNotebookDocument(document);
+
+		const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(0);
+		const output = JSON.parse(new TextDecoder().decode(cell?.outputs?.at(0)?.items?.at(0)?.data));
+
+		await vscode.commands.executeCommand(`${EXTENSION_ID}.openOutput`, 0);
+		const openedOutput = JSON.parse(vscode.window.activeTextEditor?.document.getText() ?? "null");
+		expect(openedOutput).to.deep.equal(output);
 	});
 
 	it('Run basic query', async () => {
@@ -53,7 +69,6 @@ describe('Extension Test Suite', async () => {
 		await vscode.commands.executeCommand('notebook.execute', document.uri);
 
 		//delay is needed afaik there is no way to check if a cell is finished executing
-		const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 		await delay(1000);
 
 		//check output

@@ -118,7 +118,7 @@ export const openNewNotebook = async (): Promise<void> => {
     {
       kind: vscode.NotebookCellKind.Markup,
       languageId: 'markdown',
-      value: '# Welcome to JSONPath Notebook!\n**To get started:** Add your JSONPath query in the code cell below and press run.\n\nTo get rid of this introduction text, select the trash bin icon on the top right. You can add you own text cells to the notebook by clicking the *Markdown*-Button on the top left.\n\nFor more information check out the [README](https://github.com/mesarth/jsonpath-notebook).'
+      value: '# Welcome to JSONPath Notebook!\n**To get started:** Add your JSONPath query in the code cell below and press run.\n\nTo get rid of this introduction text, select the trash bin icon on the top right. You can add you own text cells to the notebook by clicking the *Markdown*-Button on the top left.\n\nFor more information check out the [README](https://github.com/mesarth/jsonpath-notebook).\n\n<sup>Note: This pre-filled intro notebook is only shown on this first time.</sup>'
     },
     {
       kind: vscode.NotebookCellKind.Code,
@@ -126,14 +126,27 @@ export const openNewNotebook = async (): Promise<void> => {
       value: '$.store.book[*].author'
     }
   ]);
-  const document = await vscode.workspace.openNotebookDocument(NOTEBOOK_TYPE, notebookData);
+
+  const firstTime = await isFirstTimeOpen();
+  if (firstTime) {
+    (await getContext()).globalState.update('jsonpath-notebook:isFirstTimeOpen', false);
+  }
+
+
+  const document = await vscode.workspace.openNotebookDocument(NOTEBOOK_TYPE, firstTime ? notebookData : undefined);
   await vscode.window.showNotebookDocument(document);
 };
 
-export const showFirstTimeInfo = (context: vscode.ExtensionContext) => {
-  const key = `${EXTENSION_ID}:firstTimeOpened`;
-  if (!context.globalState.get(key)) {
-    vscode.window.showInformationMessage('JSONPath Notebook is now active. Create a new .jsonpath-notebook file to start', 'Create new notebook').then(selected => selected && openNewNotebook());
-    context.globalState.update('jsonpath-notebook:firstTimeOpened', true);
+export const isFirstTimeOpen = async () => {
+  return (await getContext()).globalState.get(`${EXTENSION_ID}:isFirstTimeOpen`) !== false;
+};
+
+export const showFirstTimeInfo = async () => {
+  if (await isFirstTimeOpen()) {
+    vscode.window.showInformationMessage('JSONPath Notebook is installed. Create a new .jsonpath-notebook file to start.', 'Create new notebook').then(selected => selected && vscode.commands.executeCommand(`${EXTENSION_ID}.openNewNotebook`));
   }
+};
+
+export const getContext = async () => {
+  return await vscode.commands.executeCommand(`${EXTENSION_ID}.getContext`) as vscode.ExtensionContext;
 };

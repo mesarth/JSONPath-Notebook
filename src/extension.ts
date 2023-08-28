@@ -12,7 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(`${EXTENSION_ID}.changeContext`, (cellIndex: number) => showChangeContextQuickPick(cellIndex)),
 		vscode.commands.registerCommand(`${EXTENSION_ID}.openOutput`, (cellIndex: number) => openCellOutput(cellIndex)),
 		vscode.commands.registerCommand(`${EXTENSION_ID}.openNewNotebook`, () => openNewNotebook()),
+		vscode.commands.registerCommand(`${EXTENSION_ID}.getContext`, () => context),
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(NOTEBOOK_TYPE, new CellStatusProvider())
 	);
-	showFirstTimeInfo(context);
+	showFirstTimeInfo();
 }

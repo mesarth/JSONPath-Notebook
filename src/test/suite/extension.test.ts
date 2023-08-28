@@ -2,7 +2,7 @@
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 import { assert, expect } from 'chai';
-import { EXTENSION_ID, LANGUAGE_ID, NOTEBOOK_TYPE } from '../../utils';
+import { EXTENSION_ID, LANGUAGE_ID, NOTEBOOK_TYPE, getContext } from '../../utils';
 import path = require('path');
 // import * as myExtension from '../../extension';
 
@@ -27,9 +27,16 @@ describe('Extension Test Suite', async () => {
 			assert.equal(NOTEBOOK_TYPE, vscode.window.activeNotebookEditor?.notebook.notebookType);
 		});
 
-		it('is correct Notebook', async () => {
+		it('is correct Notebook - first time', async () => {
+			(await getContext()).globalState.update('jsonpath-notebook:isFirstTimeOpen', true);
 			await vscode.commands.executeCommand(`${EXTENSION_ID}.openNewNotebook`);
 			assert.equal(2, vscode.window.activeNotebookEditor?.notebook.cellCount);
+		});
+
+		it('is correct Notebook - not first time', async () => {
+			(await getContext()).globalState.update('jsonpath-notebook:isFirstTimeOpen', false);
+			await vscode.commands.executeCommand(`${EXTENSION_ID}.openNewNotebook`);
+			assert.equal(0, vscode.window.activeNotebookEditor?.notebook.cellCount);
 		});
 	});
 

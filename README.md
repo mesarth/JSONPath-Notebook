@@ -14,7 +14,7 @@ A [Visual Studio Code Extension](https://marketplace.visualstudio.com/) which al
 - [open query result](#open-output) in new document to save or further edit
 - input file (context) is remembered by each cell and stored in the notebook file
 - store and share notebook files `.jsonpath-notebook`
-- supports Visual Studio Code Web - [vscode.dev](vscode.dev) or [github.dev](github.dev)
+<!-- - supports Visual Studio Code Web - [vscode.dev](https://vscode.dev) or [github.dev](https://github.dev) -->
 
 
 ## Installation
@@ -30,13 +30,13 @@ If you prefer not use the Microsoft Marketplace you can also install the extensi
 ### Creating a new Notebook
 After installation a popup should appear, asking you to create a new notebook.
 
-You can also create a new notebook by using the command `JSONPath Notebook: Open new Notebook` or creating a new file ending with `.jsonpath-notebook`
+You can also create a new notebook by using the command `JSONPath Notebook: Open new Notebook` or creating a file with the `.jsonpath-notebook` ending.
 
 ![Creating a new Notebook Showcase](./images/create-notebook.gif)
 
 
 ### Switching input file (context)
-On first execution of a cell the context is determined as follows
+On first execution of a cell the input file is determined as follows
 - by default the JSON file opened in the editor will be used
   - if there is more than one JSON file opened in the editor, a popup appears asking to select a file
   - there is also an option in this popup to select a file from the file system
@@ -54,7 +54,7 @@ The result of a query can be opened in a new file by clicking the button `Open o
 
 
 ### Markdown support
-JSONPath Notebook supports Markdown formatted cells. To add a new Markdown cell press the button `+ Markdown` or calling the command `Notebook: Insert Markdown Cell Above/Below`. For an introduction to the Markdown syntax see [Github Markdown Guide](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#quoting-code).
+JSONPath Notebook supports Markdown formatted cells. To add a new Markdown cell press the button `+ Markdown` or run the command `Notebook: Insert Markdown Cell Above/Below`. For an introduction to the Markdown syntax see [Github Markdown Guide](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#quoting-code).
 
 ![Markdown Showcase](./images/markdown.gif)
 
@@ -69,3 +69,5 @@ See [Changelog.md](Changelog.md)
 Found a bug? Have a feature request? Reach out on our [GitHub Issues page](https://github.com/mesarth/JSONPath-Notebook/issues).
 
 ## JSONPath engines used
+- Default: [https://github.com/brunerd/jsonpath](https://github.com/brunerd/jsonpath)
+- more engine options coming soon

@@ -14,7 +14,10 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:**/*.json",
+    "workspaceContains:**/*.jsonpath-notebook"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [

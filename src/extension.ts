@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Serializer } from './Serializer';
-import { EXTENSION_ID, NOTEBOOK_TYPE, openCellOutput, openNewNotebook, showChangeContextQuickPick } from './utils';
+import { EXTENSION_ID, NOTEBOOK_TYPE, openCellOutput, openNewNotebook, showChangeContextQuickPick, showFirstTimeInfo } from './utils';
 import { Controller } from './Controller';
 import { CellStatusProvider } from './CellStatusProvider';
 
@@ -14,6 +14,5 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(`${EXTENSION_ID}.openNewNotebook`, () => openNewNotebook()),
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(NOTEBOOK_TYPE, new CellStatusProvider())
 	);
-
-	vscode.window.showInformationMessage('JSONPath Notebooks is now active. Create a new .jsonpath-notebook file to start', 'Create new notebook').then(selected => selected && openNewNotebook());
+	showFirstTimeInfo(context);
 }

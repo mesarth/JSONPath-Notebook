@@ -71,7 +71,8 @@
     "pretest": "yarn run compile && yarn run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "package": "vsce package -o 'jsonpath-notebook.vsix'"
+    "package": "vsce package",
+    "deploy": "vsce publish --yarn"
   },
   "devDependencies": {
     "@types/chai": "^4.3.5",

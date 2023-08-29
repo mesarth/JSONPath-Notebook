@@ -1,7 +1,7 @@
 # JSONPath Notebook for Visual Studio Code
 <!-- Run JSONPath queries inside VS Code notebooks (also known as Jupyter Notebooks).  -->
 
-A [Visual Studio Code Extension](https://marketplace.visualstudio.com/) which allows you to use JSONPath queries inside Notebooks (also known as Jupyter Notebooks).
+A [Visual Studio Code Extension](https://marketplace.visualstudio.com/) for running JSONPath queries inside Notebooks (also known as Jupyter Notebooks).
 
 [![Actions Status](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml/badge.svg)](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml)
 
@@ -15,7 +15,10 @@ A [Visual Studio Code Extension](https://marketplace.visualstudio.com/) which al
 - input file (context) is remembered by each cell and stored in the notebook file
 - store and share notebook files `.jsonpath-notebook`
 <!-- - supports Visual Studio Code Web - [vscode.dev](https://vscode.dev) or [github.dev](https://github.dev) -->
-
+<!-- ### Planned
+- Proper Syntax Highlighting
+- Error handling
+- JSONPath engine options -->
 
 ## Installation
 Install the extension through the VS Code marketplace. 

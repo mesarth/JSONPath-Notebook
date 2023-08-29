@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env:
-  PACKAGE_NAME: jsonpath-notebook-${VERSION}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}.vsix
+  PACKAGE_NAME: jsonpath-notebook-${{ github.sha }}-${{ github.run_id }}-${{ github.run_number }}.vsix
 jobs:
   test:
     strategy:
@@ -35,9 +35,10 @@ jobs:
         with:
           node-version: 16.x
           cache: 'npm'
+      - run: yarn install
       - run: npm install --global @vscode/vsce
-      - run: vsce package -o "$PACKAGE_NAME"
+      - run: vsce package -o "${{ env.PACKAGE_NAME }}"
       - uses: actions/upload-artifact@v3
         with:
           name: package
-          path: $PACKAGE_NAME
+          path: ./${{ env.PACKAGE_NAME }}

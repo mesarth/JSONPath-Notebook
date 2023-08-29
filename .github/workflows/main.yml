@@ -3,9 +3,10 @@ on:
   push:
     branches:
       - main
-
+env:
+  PACKAGE_NAME: jsonpath-notebook-${VERSION}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}.vsix
 jobs:
-  build:
+  test:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
@@ -23,3 +24,20 @@ jobs:
       if: runner.os == 'Linux'
     - run: npm test
       if: runner.os != 'Linux'
+  package:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'npm'
+      - run: npm install --global @vscode/vsce
+      - run: vsce package -o "$PACKAGE_NAME"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: $PACKAGE_NAME

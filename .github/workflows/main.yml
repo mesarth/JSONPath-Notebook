@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - '**'
 env:
   PACKAGE_NAME: jsonpath-notebook-${{ github.sha }}-${{ github.run_id }}-${{ github.run_number }}.vsix
   RELEASE_NAME: jsonpath-notebook-${{ github.ref_name }}.vsix

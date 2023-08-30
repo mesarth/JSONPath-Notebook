@@ -9,14 +9,11 @@
   <h1 align="center">JSONPath Notebook<br>for Visual Studio Code</h1>
   <p align="center">
 A <a href="https://marketplace.visualstudio.com/">Visual Studio Code Extension</a> for running JSONPath queries inside Notebooks (also known as Jupyter Notebooks).
-    <br />
-    <br />
-    <a href="/actions/workflows/main.yml">
-      <img src="/actions/workflows/main.yml/badge.svg" alt="CI Status"/>
-    </a>
-    <a href="https://marketplace.visualstudio.com/">VS Code Marketplace</a>
   </p>
 </p>
+
+[![Actions Status](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml/badge.svg)](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml)
+[VS Code Marketplace](https://marketplace.visualstudio.com/)
 
 ![Intro Showcase](./images/intro.gif)
 

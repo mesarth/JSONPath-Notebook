@@ -1,19 +1,16 @@
 <!-- Run JSONPath queries inside VS Code notebooks (also known as Jupyter Notebooks).  -->
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/">
+  <a href="https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook">
     <img width="150" height="150" src="./images/icon.png" alt="JSONPath Notebook" width="200" />
   </a>
 </p>
 <p align="center">
   <h1 align="center">JSONPath Notebook<br>for Visual Studio Code</h1>
   <p align="center">
-A <a href="https://marketplace.visualstudio.com/">Visual Studio Code Extension</a> for running JSONPath queries inside Notebooks (also known as Jupyter Notebooks).
+    A Visual Studio Code Extension for running JSONPath queries inside Notebooks (also known as Jupyter Notebooks).
   </p>
 </p>
-
-[![Actions Status](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml/badge.svg)](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml)
-[VS Code Marketplace](https://marketplace.visualstudio.com/)
 
 ![Intro Showcase](./images/intro.gif)
 
@@ -32,7 +29,7 @@ A <a href="https://marketplace.visualstudio.com/">Visual Studio Code Extension</
 
 ## Installation
 Install the extension through the VS Code marketplace. 
-[https://marketplace.visualstudio.com/](https://marketplace.visualstudio.com/) or just search for `JSONPath Notebook` inside the Extension Pane.
+[https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook](https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook) or just search for `JSONPath Notebook` inside the Extension Pane.
 
 If you prefer not use the Microsoft Marketplace you can also install the extension directly:
 1. Go to the [Releases page](/releases) of the Repository and download the latest `.vsix` file.

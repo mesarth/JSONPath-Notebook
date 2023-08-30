@@ -32,7 +32,7 @@ Install the extension through the VS Code marketplace.
 [https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook](https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook) or just search for `JSONPath Notebook` inside the Extension Pane.
 
 If you prefer not use the Microsoft Marketplace you can also install the extension directly:
-1. Go to the [Releases page](/releases) of the Repository and download the latest `.vsix` file.
+1. Go to the [Releases page](https://github.com/mesarth/JSONPath-Notebook/releases) of the Repository and download the latest `.vsix` file.
 2. Install the extension by either running the VS Code command `Developer: Install Extension from Location` and selecting the .visx file or by running the command `code --install-extension <filename>.visx`
 
 ## Usage
@@ -73,10 +73,10 @@ JSONPath Notebook supports Markdown formatted cells. To add a new Markdown cell 
 WIP
 
 ## Release Notes
-See [Changelog.md](Changelog.md)
+See [Changelog.md](https://github.com/mesarth/JSONPath-Notebook/blob/main/CHANGELOG.md)
 
 ## Issue Reporting and Feature Requests
-Found a bug? Have a feature request? Reach out on our [GitHub Issues page](/issues).
+Found a bug? Have a feature request? Reach out on our [GitHub Issues page](https://github.com/mesarth/JSONPath-Notebook/issues).
 
 ## JSONPath engines used
 - Default: [https://github.com/brunerd/jsonpath](https://github.com/brunerd/jsonpath)

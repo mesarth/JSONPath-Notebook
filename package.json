@@ -2,7 +2,12 @@
   "name": "jsonpath-notebook",
   "publisher": "tschranz",
   "displayName": "JSONPath Notebook",
-  "description": "Adding support for JSONPath expressions inside VS Code Notebooks",
+  "description": "Run JSONPath queries inside VS Code Notebooks",
+  "icon": "images/icon.png",
+  "author": {
+    "name": "Tobias Schranz",
+    "url": "https://github.com/mesarth"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mesarth/JSONPath-Notebook/"
@@ -12,6 +17,7 @@
     "vscode": "^1.80.0"
   },
   "categories": [
+    "Notebooks",
     "Other"
   ],
   "activationEvents": [

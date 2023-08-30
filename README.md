@@ -1,9 +1,22 @@
-# JSONPath Notebook for Visual Studio Code
 <!-- Run JSONPath queries inside VS Code notebooks (also known as Jupyter Notebooks).  -->
 
-A [Visual Studio Code Extension](https://marketplace.visualstudio.com/) for running JSONPath queries inside Notebooks (also known as Jupyter Notebooks).
-
-[![Actions Status](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml/badge.svg)](https://github.com/mesarth/JSONPath-Notebook/actions/workflows/main.yml)
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/">
+    <img width="150" height="150" src="./images/icon.png" alt="JSONPath Notebook" width="200" />
+  </a>
+</p>
+<p align="center">
+  <h1 align="center">JSONPath Notebook<br>for Visual Studio Code</h1>
+  <p align="center">
+A <a href="https://marketplace.visualstudio.com/">Visual Studio Code Extension</a> for running JSONPath queries inside Notebooks (also known as Jupyter Notebooks).
+    <br />
+    <br />
+    <a href="/actions/workflows/main.yml">
+      <img src="/actions/workflows/main.yml/badge.svg" alt="CI Status"/>
+    </a>
+    <a href="https://marketplace.visualstudio.com/">VS Code Marketplace</a>
+  </p>
+</p>
 
 ![Intro Showcase](./images/intro.gif)
 
@@ -25,7 +38,7 @@ Install the extension through the VS Code marketplace.
 [https://marketplace.visualstudio.com/](https://marketplace.visualstudio.com/) or just search for `JSONPath Notebook` inside the Extension Pane.
 
 If you prefer not use the Microsoft Marketplace you can also install the extension directly:
-1. Go to the [Releases page](https://github.com/mesarth/JSONPath-Notebook/releases) of the Repository and download the latest `.vsix` file.
+1. Go to the [Releases page](/releases) of the Repository and download the latest `.vsix` file.
 2. Install the extension by either running the VS Code command `Developer: Install Extension from Location` and selecting the .visx file or by running the command `code --install-extension <filename>.visx`
 
 ## Usage
@@ -69,8 +82,10 @@ WIP
 See [Changelog.md](Changelog.md)
 
 ## Issue Reporting and Feature Requests
-Found a bug? Have a feature request? Reach out on our [GitHub Issues page](https://github.com/mesarth/JSONPath-Notebook/issues).
+Found a bug? Have a feature request? Reach out on our [GitHub Issues page](/issues).
 
 ## JSONPath engines used
 - Default: [https://github.com/brunerd/jsonpath](https://github.com/brunerd/jsonpath)
 - more engine options coming soon
+
+Note: Because the standardization of JSONPath is [still ongoing](https://datatracker.ietf.org/wg/jsonpath/about/), current engine implementations differ in syntax and functionality.

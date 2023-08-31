@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.4] - 2023-08-31
+### Fixed
+- Infinite execution loop when input file is not valid JSON (#1)
+
+### Changed
+- Extension icon
 
 ## [0.0.3] - 2023-08-30
 - no extension changes

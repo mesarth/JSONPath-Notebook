@@ -50,7 +50,8 @@ export class Serializer implements vscode.NotebookSerializer {
     let contents: RawNotebookCell[] = [];
 
     for (const cell of data.cells) {
-      const rawOutput = cell?.outputs?.at(0)?.items[0].data;
+      const outputItem = cell?.outputs?.at(0)?.items[0];
+      const rawOutput = outputItem?.mime === 'text/x-json' ? outputItem.data : undefined;
       let output = undefined;
       if (rawOutput) {
         output = JSON.parse(new TextDecoder().decode(rawOutput));

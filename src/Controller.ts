@@ -66,7 +66,18 @@ export class Controller {
     }
 
     const document = await vscode.workspace.openTextDocument(selectedFileUri);
-    inputContent = JSON.parse(document.getText());
+    try {
+      inputContent = JSON.parse(document.getText());
+    }
+    catch (error: any) {
+      execution.replaceOutput([
+        new vscode.NotebookCellOutput([
+          vscode.NotebookCellOutputItem.text(`Error parsing JSON file. Please check the file and try again. \n\n${error.message}`),
+        ])
+      ]);
+      execution.end(false, Date.now());
+      return;
+    }
 
     if (isMainThread) {
       const worker = new Worker(join(__filename, '../worker.js'), {

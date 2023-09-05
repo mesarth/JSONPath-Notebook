@@ -21,11 +21,6 @@
 - [open query result](#open-output) in new document to save or further edit
 - input file (context) is remembered by each cell and stored in the notebook file
 - store and share notebook files `.jsonpath-notebook`
-<!-- - supports Visual Studio Code Web - [vscode.dev](https://vscode.dev) or [github.dev](https://github.dev) -->
-<!-- ### Planned
-- Proper Syntax Highlighting
-- Error handling
-- JSONPath engine options -->
 
 ## Installation
 Install the extension through the VS Code marketplace. 

@@ -69,7 +69,11 @@ jobs:
           name: package
       - name: Copy package with version name
         run: cp ./${{ env.PACKAGE_NAME }} ./${{ env.RELEASE_NAME }}
+      - name: Read Changelog
+        id: changelog
+        uses: mindsers/changelog-reader-action@v2
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
+          body: ${{ steps.changelog.outputs.changes }}
           artifacts: ./${{ env.RELEASE_NAME }}

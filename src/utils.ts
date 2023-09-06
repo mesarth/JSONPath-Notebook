@@ -35,7 +35,7 @@ const changeContext = async (cellIndex: number, context: vscode.Uri) => {
     const edit = new vscode.WorkspaceEdit();
     const nbEdit = vscode.NotebookEdit.updateCellMetadata(cell.index, {
       ...cell.metadata,
-      selectedFileUri: context?.fsPath
+      selectedFileUri: context?.path
     });
     edit.set(cell.notebook.uri, [nbEdit]);
     await vscode.workspace.applyEdit(edit);

@@ -2,7 +2,8 @@ import * as vscode from 'vscode';
 import jsonPath from './lib/jsonpath';
 import { LANGUAGE_ID, NOTEBOOK_TYPE, showChangeContextQuickPick } from './utils';
 import { join } from 'path';
-const { Worker, isMainThread, parentPort, workerData, } = require('worker_threads');
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const { Worker, isMainThread } = require('worker_threads');
 
 export class Controller {
   readonly controllerId = 'jsonpath-notebook-controller-id';

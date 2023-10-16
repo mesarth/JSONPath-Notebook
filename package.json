@@ -72,10 +72,10 @@
     "configuration": {
       "title": "JSONPath Notebook",
       "properties": {
-        "jsonpath-notebook.useAbsolutePaths": {
+        "jsonpath-notebook.useRelativePaths": {
           "type": "boolean",
-          "default": false,
-          "description": "Save absolute paths instead of relative paths for input .json files (context) in notebook file."
+          "default": true,
+          "description": "Save relative paths instead of absolute paths for input .json files (context) in notebook file."
         }
       }
     }

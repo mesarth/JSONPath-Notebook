@@ -26,12 +26,12 @@ class OpenFileItem implements vscode.QuickPickItem {
   label = 'Select different file';
 }
 
-const getPreferredPathFormatFromUri = (uri: vscode.Uri): string => {
+export const getPreferredPathFormatFromUri = (uri: vscode.Uri): string => {
   // absolute path by default
   let filePath = uri.path;
 
   // check if relative paths should be used
-  const useRelativePaths = vscode.workspace.getConfiguration('jsonpath-notebook').get<boolean>('useRelativePaths');
+  const useRelativePaths = vscode.workspace.getConfiguration('jsonpath-notebook').get<boolean>('useRelativePaths', true);
   // check if notebook is open
   const notebookUri = vscode.window.activeNotebookEditor?.notebook.uri;
   if (useRelativePaths && notebookUri) {

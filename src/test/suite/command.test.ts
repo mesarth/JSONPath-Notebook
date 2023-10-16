@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import { assert, expect } from 'chai';
 import { EXTENSION_ID, LANGUAGE_ID, NOTEBOOK_TYPE, getContext } from '../../utils';
-import path = require('path');
+const path = require('path');
 // import * as myExtension from '../../extension';
 
 const getTestFileUri = (relativePath: string) => {

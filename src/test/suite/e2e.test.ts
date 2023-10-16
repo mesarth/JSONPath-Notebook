@@ -1,9 +1,9 @@
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
-import { assert, expect } from 'chai';
-import { EXTENSION_ID, LANGUAGE_ID, NOTEBOOK_TYPE, getContext } from '../../utils';
-import path = require('path');
+import { expect } from 'chai';
+import { LANGUAGE_ID, NOTEBOOK_TYPE } from '../../utils';
+const path = require('path');
 // import * as myExtension from '../../extension';
 
 const getTestFileUri = (relativePath: string) => {

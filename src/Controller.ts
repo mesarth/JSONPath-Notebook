@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
-import jsonPath from './lib/jsonpath';
-import { LANGUAGE_ID, NOTEBOOK_TYPE, showChangeContextQuickPick } from './utils';
-import { join } from 'path';
+import { LANGUAGE_ID, NOTEBOOK_TYPE, showChangeContextQuickPick, getContextUriFromCell } from './utils';
+import { join } from 'upath';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { Worker, isMainThread } = require('worker_threads');
 
@@ -44,20 +43,21 @@ export class Controller {
 
     let inputContent = {};
 
+    // ask for input file if not already selected
     if (!cell.metadata.selectedFileUri) {
       await showChangeContextQuickPick(cell.index, true);
     }
 
-    let selectedFileUri = vscode.Uri.parse(cell.metadata.selectedFileUri);
-    //check if file still exists
+    let selectedFileUri = getContextUriFromCell(cell);
     try {
+      //check if file still exists
       await vscode.workspace.fs.stat(selectedFileUri);
     } catch {
       //file does not exist, ask user to select a different file
       const result = await vscode.window.showErrorMessage(`File ${selectedFileUri.fsPath} does not exist`, { modal: true, detail: 'The context file for this cell was not found at the saved path. It was probably moved or deleted.' }, 'Select different file');
       if (result) {
         await showChangeContextQuickPick(cell.index);
-        selectedFileUri = vscode.Uri.parse(cell.metadata.selectedFileUri);
+        selectedFileUri = getContextUriFromCell(cell);
       }
       else {
         //canceled by user, exit execution
@@ -66,6 +66,7 @@ export class Controller {
       }
     }
 
+    // read context file and parse as JSON    
     const document = await vscode.workspace.openTextDocument(selectedFileUri);
     try {
       inputContent = JSON.parse(document.getText());
@@ -80,6 +81,7 @@ export class Controller {
       return;
     }
 
+    // execute JSONPath query in worker thread
     if (isMainThread) {
       const worker = new Worker(join(__filename, '../worker.js'), {
         workerData: {

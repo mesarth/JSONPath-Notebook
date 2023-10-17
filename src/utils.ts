@@ -1,6 +1,5 @@
-import { rejects } from 'assert';
-import path = require('path');
 import * as vscode from 'vscode';
+const path = require('upath');
 
 export const NOTEBOOK_TYPE = 'jsonpath-notebook';
 export const LANGUAGE_ID = 'JSONPath';
@@ -11,8 +10,6 @@ class FileItem implements vscode.QuickPickItem {
 
   label: string;
   description: string;
-
-
   constructor(public uri: vscode.Uri, public cwd: vscode.Uri) {
     this.label = `$(file) ${path.basename(uri.fsPath)}`;
     this.description = path.dirname(path.relative(path.dirname(cwd.fsPath), uri.fsPath));
@@ -28,18 +25,58 @@ class OpenFileItem implements vscode.QuickPickItem {
   label = 'Select different file';
 }
 
+export const getPreferredPathFormatFromUri = (uri: vscode.Uri): string => {
+  // absolute path by default
+  let filePath = uri.path;
+
+  // check if relative paths should be used
+  const useRelativePaths = vscode.workspace.getConfiguration('jsonpath-notebook').get<boolean>('useRelativePaths', true);
+  // check if notebook is open
+  const notebookUri = vscode.window.activeNotebookEditor?.notebook.uri;
+  if (useRelativePaths && notebookUri) {
+    // check if both files are on the same drive
+    // if not, use absolute path
+    const notebookRoot = path.parse(notebookUri.fsPath).root;
+    const contextRoot = path.parse(uri.fsPath).root;
+    if (notebookRoot === contextRoot) {
+      // use relative path
+      filePath = path.relative(path.dirname(notebookUri.path), uri.path);
+    }
+  }
+  return filePath;
+};
+
+export const getContextUriFromCell = (cell: vscode.NotebookCell): vscode.Uri => {
+  const notebookUri = cell.document.uri;
+  const notebookPath = notebookUri.path;
+
+  const selectedFileUri = cell.metadata.selectedFileUri;
+
+  if (path.isAbsolute(selectedFileUri)) {
+    return vscode.Uri.parse(selectedFileUri);
+  }
+  else {
+    // build absolute path from relative path because vscode.Uri does not support relative paths
+    const absolutePath = path.join(path.dirname(notebookPath), selectedFileUri);
+    return vscode.Uri.parse(absolutePath);
+  }
+};
+
 const changeContext = async (cellIndex: number, context: vscode.Uri) => {
   const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
-  if (cell) {
-    // create workspace edit to update tag
-    const edit = new vscode.WorkspaceEdit();
-    const nbEdit = vscode.NotebookEdit.updateCellMetadata(cell.index, {
-      ...cell.metadata,
-      selectedFileUri: context?.path
-    });
-    edit.set(cell.notebook.uri, [nbEdit]);
-    await vscode.workspace.applyEdit(edit);
-  }
+  if (!cell) { return; };
+
+  // get correct path format based on setting
+  const selectedFileUri = getPreferredPathFormatFromUri(context);
+
+  // create workspace edit to update tag
+  const edit = new vscode.WorkspaceEdit();
+  const nbEdit = vscode.NotebookEdit.updateCellMetadata(cell.index, {
+    ...cell.metadata,
+    selectedFileUri
+  });
+  edit.set(cell.notebook.uri, [nbEdit]);
+  await vscode.workspace.applyEdit(edit);
 };
 
 export const showJsonFileSelector = async () => {

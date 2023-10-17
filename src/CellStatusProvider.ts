@@ -1,4 +1,4 @@
-import path = require('path');
+const path = require('upath');
 import * as vscode from 'vscode';
 import { EXTENSION_ID } from './utils';
 

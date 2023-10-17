@@ -68,6 +68,16 @@
           "command": "jsonpath-notebook.openNewNotebook"
         }
       ]
+    },
+    "configuration": {
+      "title": "JSONPath Notebook",
+      "properties": {
+        "jsonpath-notebook.useRelativePaths": {
+          "type": "boolean",
+          "default": true,
+          "description": "Save relative paths instead of absolute paths for input .json files (context) in notebook file."
+        }
+      }
     }
   },
   "scripts": {
@@ -95,5 +105,8 @@
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
     "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "upath": "^2.0.1"
   }
 }

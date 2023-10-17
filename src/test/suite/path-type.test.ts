@@ -52,7 +52,7 @@ describe('Path Type Tests', async () => {
 		await vscode.window.showNotebookDocument(notebook);
 		await vscode.workspace.getConfiguration('jsonpath-notebook').update('useRelativePaths', true, true);
 
-		const contextUri = vscode.Uri.file('C:\\input\\bookstore.json');
+		const contextUri = vscode.Uri.file('Z:\\input\\bookstore.json');
 
 		const expectedPath = contextUri.path;
 		const actualPath = getPreferredPathFormatFromUri(contextUri);

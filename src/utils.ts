@@ -34,16 +34,13 @@ export const getPreferredPathFormatFromUri = (uri: vscode.Uri): string => {
   // check if notebook is open
   const notebookUri = vscode.window.activeNotebookEditor?.notebook.uri;
   if (useRelativePaths && notebookUri) {
-    const notebookPath = notebookUri.path;
-    const contextPath = uri.path;
-
     // check if both files are on the same drive
     // if not, use absolute path
-    const notebookRoot = path.parse(notebookPath).root;
-    const contextRoot = path.parse(contextPath).root;
+    const notebookRoot = path.parse(notebookUri.fsPath).root;
+    const contextRoot = path.parse(uri.fsPath).root;
     if (notebookRoot === contextRoot) {
       // use relative path
-      filePath = path.relative(path.dirname(notebookPath), contextPath);
+      filePath = path.relative(path.dirname(notebookUri.path), uri.path);
     }
   }
   return filePath;

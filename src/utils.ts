@@ -1,6 +1,5 @@
-import { rejects } from 'assert';
-import path = require('path');
 import * as vscode from 'vscode';
+const path = require('upath');
 
 export const NOTEBOOK_TYPE = 'jsonpath-notebook';
 export const LANGUAGE_ID = 'JSONPath';

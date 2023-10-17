@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { LANGUAGE_ID, NOTEBOOK_TYPE, showChangeContextQuickPick, getContextUriFromCell } from './utils';
-import { join } from 'path';
+import { join } from 'upath';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { Worker, isMainThread } = require('worker_threads');
 
@@ -57,7 +57,7 @@ export class Controller {
       const result = await vscode.window.showErrorMessage(`File ${selectedFileUri.fsPath} does not exist`, { modal: true, detail: 'The context file for this cell was not found at the saved path. It was probably moved or deleted.' }, 'Select different file');
       if (result) {
         await showChangeContextQuickPick(cell.index);
-        selectedFileUri = vscode.Uri.parse(cell.metadata.selectedFileUri);
+        selectedFileUri = getContextUriFromCell(cell);
       }
       else {
         //canceled by user, exit execution

@@ -6,20 +6,29 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
   provideCellStatusBarItems(cell: vscode.NotebookCell, token: vscode.CancellationToken): vscode.ProviderResult<vscode.NotebookCellStatusBarItem | vscode.NotebookCellStatusBarItem[]> {
     const items: vscode.NotebookCellStatusBarItem[] = [];
 
+    // change context
+    const itemContent = {
+      text: '$(search-new-editor) Select input file (context)',
+      tooltip: 'Select an input file (context) for this cell'
+    }
+
     const selectedFileUriPath = cell.metadata.selectedFileUri;
     if (selectedFileUriPath) {
       const selectedFileUri = vscode.Uri.parse(selectedFileUriPath);
-
-      const item = new vscode.NotebookCellStatusBarItem(`$(file) ${path.basename(selectedFileUri.fsPath)}`, vscode.NotebookCellStatusBarAlignment.Right);
-      item.tooltip = selectedFileUri.path;
-      item.command = {
-        title: "$Change Context",
-        command: `${EXTENSION_ID}.changeContext`,
-        arguments: [cell.index]
-      };
-      items.push(item);
+      itemContent.text = `$(file) ${path.basename(selectedFileUri.fsPath)}`;
+      itemContent.tooltip = selectedFileUri.path;
     }
+    const item = new vscode.NotebookCellStatusBarItem(itemContent.text, vscode.NotebookCellStatusBarAlignment.Right);
+    item.tooltip = itemContent.tooltip;
+    item.command = {
+      title: "$Change Context",
+      command: `${EXTENSION_ID}.changeContext`,
+      arguments: [cell.index]
+    };
+    items.push(item);
 
+
+    // open output in new tab
     if (cell.outputs.length > 0) {
       const item = new vscode.NotebookCellStatusBarItem('$(output) Open output in new tab', vscode.NotebookCellStatusBarAlignment.Left);
       item.tooltip = 'Open the JSON result of the query in a new tab';

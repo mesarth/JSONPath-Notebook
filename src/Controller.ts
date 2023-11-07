@@ -40,24 +40,37 @@ export class Controller {
     execution.executionOrder = ++this._executionOrder;
     execution.start(Date.now()); // Keep track of elapsed time to execute cell.
 
-
-    let inputContent = {};
-
     // ask for input file if not already selected
     if (!cell.metadata.selectedFileUri) {
-      await showChangeContextQuickPick(cell.index, true);
+      const result = await showChangeContextQuickPick(cell.index, true);
+      if (!result) {
+        //canceled by user, exit execution
+        execution.end(false, Date.now());
+        return;
+      }
     }
 
     let selectedFileUri = getContextUriFromCell(cell);
+    if (!selectedFileUri) {
+      //canceled by user, exit execution
+      execution.end(false, Date.now());
+      return;
+    }
+
     try {
       //check if file still exists
       await vscode.workspace.fs.stat(selectedFileUri);
-    } catch {
+    } catch (err) {
       //file does not exist, ask user to select a different file
       const result = await vscode.window.showErrorMessage(`File ${selectedFileUri.fsPath} does not exist`, { modal: true, detail: 'The context file for this cell was not found at the saved path. It was probably moved or deleted.' }, 'Select different file');
       if (result) {
-        await showChangeContextQuickPick(cell.index);
-        selectedFileUri = getContextUriFromCell(cell);
+        const result = await showChangeContextQuickPick(cell.index);
+        if (!result) {
+          //canceled by user, exit execution
+          execution.end(false, Date.now());
+          return;
+        }
+        selectedFileUri = result;
       }
       else {
         //canceled by user, exit execution
@@ -66,6 +79,7 @@ export class Controller {
       }
     }
 
+    let inputContent = {};
     // read context file and parse as JSON    
     const document = await vscode.workspace.openTextDocument(selectedFileUri);
     try {

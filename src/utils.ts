@@ -5,7 +5,6 @@ export const NOTEBOOK_TYPE = 'jsonpath-notebook';
 export const LANGUAGE_ID = 'JSONPath';
 export const EXTENSION_ID = 'jsonpath-notebook';
 
-
 class FileItem implements vscode.QuickPickItem {
 
   label: string;
@@ -95,20 +94,20 @@ export const showJsonFileSelector = async () => {
   return undefined;
 };
 
-export const showChangeContextQuickPick = async (cellIndex: number, autoChoose = false): Promise<void> => {
+export const showChangeContextQuickPick = async (cellIndex: number, autoChoose = false): Promise<vscode.Uri | undefined> => {
   const inputTabs = vscode.window.tabGroups.all.flatMap(({ tabs }) => tabs.map(tab => tab.input)).filter(input => input instanceof vscode.TabInputText) as vscode.TabInputText[];
   const jsonTabs = inputTabs.filter((input) => path.extname(input.uri.fsPath) === '.json');
 
   if (autoChoose && jsonTabs.length === 1) {
-    await changeContext(cellIndex, jsonTabs[0].uri);
-    return;
+    const uri = jsonTabs[0].uri;
+    await changeContext(cellIndex, uri);
+    return uri;
   }
   else if (jsonTabs.length === 0) {
     const uri = await showJsonFileSelector();
-    if (uri) {
-      await changeContext(cellIndex, uri);
-    }
-    return;
+    if (!uri) return undefined;
+    await changeContext(cellIndex, uri);
+    return uri;
   }
 
   const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
@@ -127,7 +126,12 @@ export const showChangeContextQuickPick = async (cellIndex: number, autoChoose =
   });
   quickpick.items = [...quickpick.items, new SeparatorItem, new OpenFileItem];
   quickpick.busy = false;
-  await new Promise(resolve => quickpick.onDidAccept(resolve));
+  const result = await new Promise(resolve => {
+    quickpick.onDidAccept(() => resolve(true));
+    quickpick.onDidHide(() => resolve(false));
+  });
+  if (!result) return undefined;
+
   const selectedItems = quickpick.selectedItems;
   let uri: vscode.Uri | undefined = undefined;
   if (selectedItems[0] instanceof FileItem) {
@@ -136,11 +140,11 @@ export const showChangeContextQuickPick = async (cellIndex: number, autoChoose =
   else if (selectedItems[0] instanceof OpenFileItem) {
     uri = await showJsonFileSelector();
   }
-  if (uri) {
-    await changeContext(cellIndex, uri);
-  }
   quickpick.dispose();
-  return;
+
+  if (!uri) return undefined;
+  await changeContext(cellIndex, uri);
+  return uri;
 };
 
 export const openCellOutput = async (cellIndex: number): Promise<void> => {

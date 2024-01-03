@@ -75,5 +75,7 @@ jobs:
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
+          commit: ${{ github.sha }}
+          tag: ${{ env.RELEASE_NAME }}
           body: ${{ steps.changelog.outputs.changes }}
           artifacts: ./${{ env.RELEASE_NAME }}

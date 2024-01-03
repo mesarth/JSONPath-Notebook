@@ -88,7 +88,7 @@ export class Controller {
     catch (error: any) {
       execution.replaceOutput([
         new vscode.NotebookCellOutput([
-          vscode.NotebookCellOutputItem.text(`Error parsing JSON file. Please check the file and try again. \n\n${error.message}`),
+          vscode.NotebookCellOutputItem.stderr(`Error parsing JSON file. Please check the file and try again. \n\n${error.message}`),
         ])
       ]);
       execution.end(false, Date.now());
@@ -112,12 +112,20 @@ export class Controller {
         execution.end(true, Date.now());
       });
 
+      worker.on('error', (err: any) => {
+        execution.replaceOutput([
+          new vscode.NotebookCellOutput([
+            vscode.NotebookCellOutputItem.stderr(err.message)
+          ])
+        ]);
+        execution.end(false, Date.now());
+      });
+
       execution.token.onCancellationRequested(() => {
         worker.terminate;
         execution.end(false, Date.now());
       });
     }
-
   }
 
   dispose(): any { }

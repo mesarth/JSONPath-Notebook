@@ -3,3 +3,4 @@ import jsonPath from './lib/jsonpath';
 
 const result = jsonPath(workerData.input, workerData.expression);
 parentPort.postMessage(result);
+process.exit();

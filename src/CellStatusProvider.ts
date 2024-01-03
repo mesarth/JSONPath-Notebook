@@ -4,6 +4,11 @@ import { Config } from './utils';
 
 export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvider {
   provideCellStatusBarItems(cell: vscode.NotebookCell, token: vscode.CancellationToken): vscode.ProviderResult<vscode.NotebookCellStatusBarItem | vscode.NotebookCellStatusBarItem[]> {
+
+    if (cell.kind !== vscode.NotebookCellKind.Code) {
+      return [];
+    }
+
     const items: vscode.NotebookCellStatusBarItem[] = [];
 
     // change context

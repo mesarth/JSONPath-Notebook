@@ -1,6 +1,6 @@
 const path = require('upath');
 import * as vscode from 'vscode';
-import { EXTENSION_ID } from './utils';
+import { Config } from './utils';
 
 export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvider {
   provideCellStatusBarItems(cell: vscode.NotebookCell, token: vscode.CancellationToken): vscode.ProviderResult<vscode.NotebookCellStatusBarItem | vscode.NotebookCellStatusBarItem[]> {
@@ -22,7 +22,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
     item.tooltip = itemContent.tooltip;
     item.command = {
       title: "$Change Context",
-      command: `${EXTENSION_ID}.changeContext`,
+      command: `${Config.EXTENSION_ID}.changeContext`,
       arguments: [cell.index]
     };
     items.push(item);
@@ -34,7 +34,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       item.tooltip = 'Open the JSON result of the query in a new tab';
       item.command = {
         title: "Open the JSON result of the query in a new tab",
-        command: `${EXTENSION_ID}.openOutput`,
+        command: `${Config.EXTENSION_ID}.openOutput`,
         arguments: [cell.index]
       };
       items.push(item);

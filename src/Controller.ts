@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { LANGUAGE_ID, NOTEBOOK_TYPE, showChangeContextQuickPick, getContextUriFromCell } from './utils';
+import { Config, Utils } from './utils';
 import { join } from 'upath';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { Worker, isMainThread } = require('worker_threads');
@@ -7,7 +7,7 @@ const { Worker, isMainThread } = require('worker_threads');
 export class Controller {
   readonly controllerId = 'jsonpath-notebook-controller-id';
   readonly label = 'JSONPath Notebook';
-  readonly supportedLanguages = [LANGUAGE_ID];
+  readonly supportedLanguages = [Config.LANGUAGE_ID];
 
   private readonly _controller: vscode.NotebookController;
   private _executionOrder = 0;
@@ -15,7 +15,7 @@ export class Controller {
   constructor() {
     this._controller = vscode.notebooks.createNotebookController(
       this.controllerId,
-      NOTEBOOK_TYPE,
+      Config.NOTEBOOK_TYPE,
       this.label
     );
 
@@ -42,7 +42,7 @@ export class Controller {
 
     // ask for input file if not already selected
     if (!cell.metadata.selectedFileUri) {
-      const result = await showChangeContextQuickPick(cell.index, true);
+      const result = await Utils.showChangeContextQuickPick(cell.index, true);
       if (!result) {
         //canceled by user, exit execution
         execution.end(false, Date.now());
@@ -50,7 +50,7 @@ export class Controller {
       }
     }
 
-    let selectedFileUri = getContextUriFromCell(cell);
+    let selectedFileUri = Utils.getContextUriFromCell(cell);
     if (!selectedFileUri) {
       //canceled by user, exit execution
       execution.end(false, Date.now());
@@ -64,7 +64,7 @@ export class Controller {
       //file does not exist, ask user to select a different file
       const result = await vscode.window.showErrorMessage(`File ${selectedFileUri.fsPath} does not exist`, { modal: true, detail: 'The context file for this cell was not found at the saved path. It was probably moved or deleted.' }, 'Select different file');
       if (result) {
-        const result = await showChangeContextQuickPick(cell.index);
+        const result = await Utils.showChangeContextQuickPick(cell.index);
         if (!result) {
           //canceled by user, exit execution
           execution.end(false, Date.now());

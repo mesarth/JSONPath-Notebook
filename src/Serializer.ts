@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { TextDecoder, TextEncoder } from 'util';
-import { LANGUAGE_ID } from './utils';
+import { Config } from './utils';
 
 interface RawNotebookCell {
   source: string;
@@ -30,7 +30,7 @@ export class Serializer implements vscode.NotebookSerializer {
             ? vscode.NotebookCellKind.Code
             : vscode.NotebookCellKind.Markup,
           JSON.parse(item.source),
-          item.cellType === 'code' ? LANGUAGE_ID : 'markdown',
+          item.cellType === 'code' ? Config.LANGUAGE_ID : 'markdown',
         );
         cell.metadata = item.metadata;
         if (item.output) {

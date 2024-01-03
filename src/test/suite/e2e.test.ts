@@ -2,7 +2,7 @@
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 import { expect } from 'chai';
-import { LANGUAGE_ID, NOTEBOOK_TYPE } from '../../utils';
+import { Config } from '../../utils';
 const path = require('upath');
 // import * as myExtension from '../../extension';
 
@@ -29,14 +29,14 @@ describe('E2E Tests', async () => {
 		const notebookData = new vscode.NotebookData([
 			{
 				kind: vscode.NotebookCellKind.Code,
-				languageId: LANGUAGE_ID,
+				languageId: Config.LANGUAGE_ID,
 				value: '$..book[?(@.price<10)]',
 				metadata: {
 					"selectedFileUri": inputDocumentUri.path
 				}
 			}
 		]);
-		const document = await vscode.workspace.openNotebookDocument(NOTEBOOK_TYPE, notebookData);
+		const document = await vscode.workspace.openNotebookDocument(Config.NOTEBOOK_TYPE, notebookData);
 		await vscode.window.showNotebookDocument(document);
 
 		//execute first cell

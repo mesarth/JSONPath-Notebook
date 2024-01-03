@@ -1,7 +1,7 @@
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
-import { LANGUAGE_ID, NOTEBOOK_TYPE, getContextUriFromCell, getPreferredPathFormatFromUri } from '../../utils';
+import { Config, Utils } from '../../utils';
 import { expect } from 'chai';
 const path = require('upath');
 // import * as myExtension from '../../extension';
@@ -21,7 +21,7 @@ describe('Path Type Tests', async () => {
 		await vscode.commands.executeCommand('workbench.action.closeAllEditors');
 	});
 
-	it('getPreferredPathFormatFromUri: Use relative path for file context when useRelativePaths set to true (default)', async () => {
+	it('Utils.getPreferredPathFormatFromUri: Use relative path for file context when useRelativePaths set to true (default)', async () => {
 		const notebookUri = getTestFileUri('/notebooks/empty.jsonpath-notebook');
 		const notebook = await vscode.workspace.openNotebookDocument(notebookUri);
 		await vscode.workspace.getConfiguration('jsonpath-notebook').update('useRelativePaths', true, true);
@@ -30,21 +30,21 @@ describe('Path Type Tests', async () => {
 		const contextUri = getTestFileUri('/input/bookstore.json');
 
 		const expectedPath = '../input/bookstore.json';
-		const actualPath = getPreferredPathFormatFromUri(contextUri);
+		const actualPath = Utils.getPreferredPathFormatFromUri(contextUri);
 
 		expect(actualPath).to.equal(expectedPath);
 	});
 
-	it('getPreferredPathFormatFromUri: Use absolute path for file context when useRelativePaths set to true but no notebook is open', async () => {
+	it('Utils.getPreferredPathFormatFromUri: Use absolute path for file context when useRelativePaths set to true but no notebook is open', async () => {
 		const contextUri = getTestFileUri('/input/bookstore.json');
 
 		const expectedPath = contextUri.path;
-		const actualPath = getPreferredPathFormatFromUri(contextUri);
+		const actualPath = Utils.getPreferredPathFormatFromUri(contextUri);
 
 		expect(actualPath).to.equal(expectedPath);
 	});
 
-	it('getPreferredPathFormatFromUri: Use absolute path for file context when useRelativePaths set to true but is on different drive', async function () {
+	it('Utils.getPreferredPathFormatFromUri: Use absolute path for file context when useRelativePaths set to true but is on different drive', async function () {
 		if (process.platform !== 'win32') { this.skip(); }
 
 		const notebookUri = getTestFileUri('/notebooks/empty.jsonpath-notebook');
@@ -55,12 +55,12 @@ describe('Path Type Tests', async () => {
 		const contextUri = vscode.Uri.file('Z:\\input\\bookstore.json');
 
 		const expectedPath = contextUri.path;
-		const actualPath = getPreferredPathFormatFromUri(contextUri);
+		const actualPath = Utils.getPreferredPathFormatFromUri(contextUri);
 
 		expect(actualPath).to.equal(expectedPath);
 	});
 
-	it('getPreferredPathFormatFromUri: Use absolute path for file context when useRelativePaths set to false', async () => {
+	it('Utils.getPreferredPathFormatFromUri: Use absolute path for file context when useRelativePaths set to false', async () => {
 		const notebookUri = getTestFileUri('/notebooks/empty.jsonpath-notebook');
 		const notebook = await vscode.workspace.openNotebookDocument(notebookUri);
 		await vscode.window.showNotebookDocument(notebook);
@@ -69,12 +69,12 @@ describe('Path Type Tests', async () => {
 		const contextUri = getTestFileUri('/input/bookstore.json');
 
 		const expectedPath = contextUri.path;
-		const actualPath = getPreferredPathFormatFromUri(contextUri);
+		const actualPath = Utils.getPreferredPathFormatFromUri(contextUri);
 
 		expect(actualPath).to.equal(expectedPath);
 	});
 
-	it('getContextUriFromCell: Returns correct uri when metadata selectedFileUri is relative path', async () => {
+	it('Utils.getContextUriFromCell: Returns correct uri when metadata selectedFileUri is relative path', async () => {
 		const notebookUri = getTestFileUri('/notebooks/empty.jsonpath-notebook');
 		const notebook = await vscode.workspace.openNotebookDocument(notebookUri);
 
@@ -84,7 +84,7 @@ describe('Path Type Tests', async () => {
 		const edit = new vscode.WorkspaceEdit();
 		const nbEdit = vscode.NotebookEdit.insertCells(0, [{
 			kind: vscode.NotebookCellKind.Code,
-			languageId: LANGUAGE_ID,
+			languageId: Config.LANGUAGE_ID,
 			value: '$..book[?(@.price<10)]',
 			metadata: {
 				"selectedFileUri": "../input/bookstore.json"
@@ -96,11 +96,11 @@ describe('Path Type Tests', async () => {
 		const cell = notebook.cellAt(0);
 		if (!cell) { return; }
 		const expectedUri = getTestFileUri('/input/bookstore.json');
-		const actualUri = getContextUriFromCell(cell);
+		const actualUri = Utils.getContextUriFromCell(cell);
 		expect(actualUri).to.deep.equal(expectedUri);
 	});
 
-	it('getContextUriFromCell: Returns correct uri when metadata selectedFileUri is absolute', async () => {
+	it('Utils.getContextUriFromCell: Returns correct uri when metadata selectedFileUri is absolute', async () => {
 		const notebookUri = getTestFileUri('/notebooks/empty.jsonpath-notebook');
 		const notebook = await vscode.workspace.openNotebookDocument(notebookUri);
 
@@ -110,7 +110,7 @@ describe('Path Type Tests', async () => {
 		const edit = new vscode.WorkspaceEdit();
 		const nbEdit = vscode.NotebookEdit.insertCells(0, [{
 			kind: vscode.NotebookCellKind.Code,
-			languageId: LANGUAGE_ID,
+			languageId: Config.LANGUAGE_ID,
 			value: '$..book[?(@.price<10)]',
 			metadata: {
 				"selectedFileUri": getTestFileUri('/input/bookstore.json').path
@@ -122,7 +122,7 @@ describe('Path Type Tests', async () => {
 		const cell = notebook.cellAt(0);
 		if (!cell) { return; }
 		const expectedUri = getTestFileUri('/input/bookstore.json');
-		const actualUri = getContextUriFromCell(cell);
+		const actualUri = Utils.getContextUriFromCell(cell);
 		expect(actualUri).to.deep.equal(expectedUri);
 	});
 });

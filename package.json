@@ -20,6 +20,14 @@
     "Notebooks",
     "Other"
   ],
+  "keywords": [
+    "jsonpath",
+    "json path",
+    "json query",
+    "notebook",
+    "json",
+    "query"
+  ],
   "activationEvents": [
     "workspaceContains:**/*.json",
     "workspaceContains:**/*.jsonpath-notebook"

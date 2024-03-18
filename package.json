@@ -115,6 +115,8 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "json-p3": "^1.1.1",
     "upath": "^2.0.1"
-  }
+  },
+  "packageManager": "yarn@4.1.1"
 }

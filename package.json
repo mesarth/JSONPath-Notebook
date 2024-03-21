@@ -89,14 +89,14 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "yarn run compile",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
+    "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "package": "vsce package",
-    "deploy": "vsce publish --yarn --skip-duplicate"
+    "deploy": "vsce publish --skip-duplicate"
   },
   "devDependencies": {
     "@types/chai": "^4.3.5",
@@ -107,7 +107,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
     "@vscode/test-electron": "^2.3.2",
-    "@vscode/vsce": "^2.20.1",
+    "@vscode/vsce": "^2.24.0",
     "chai": "^4.3.7",
     "eslint": "^8.41.0",
     "glob": "^8.1.0",
@@ -118,5 +118,5 @@
     "json-p3": "^1.1.1",
     "upath": "^2.0.1"
   },
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "npm@4.1.1"
 }

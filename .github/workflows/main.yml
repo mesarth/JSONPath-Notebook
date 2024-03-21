@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
-      - run: yarn install
-      - run: xvfb-run -a yarn test
+          cache: 'npm'
+      - run: npm install
+      - run: xvfb-run -a npm test
         if: runner.os == 'Linux'
-      - run: yarn test
+      - run: npm test
         if: runner.os != 'Linux'
   package:
     runs-on: ubuntu-latest
@@ -37,9 +37,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
-      - run: yarn install
-      - run: yarn package -o "${{ env.PACKAGE_NAME }}"
+          cache: 'npm'
+      - run: npm install
+      - run: npm run package -- --no-yarn -o "${{ env.PACKAGE_NAME }}" # -- is used to pass arguments to the script
       - uses: actions/upload-artifact@v4
         with:
           name: package
@@ -57,10 +57,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
-      - run: yarn install
+          cache: 'npm'
+      - run: npm install
       - name: Publish
-        run: yarn run deploy
+        run: npm run deploy
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
       - name: Download package artifact

@@ -139,7 +139,7 @@ When set to `true` the notebook will save the paths to input files relative to t
 
 ## JSONPath engine
 
-JSONPath Notebook uses the [json-p3](https://github.com/jg-rp/json-p3) JSONPath engine for querying JSON files. The engine follows the JSONPath standard as defined in [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535).
+JSONPath Notebook uses the [json-p3](https://github.com/jg-rp/json-p3) JSONPath engine for querying JSON files. The engine follows the JSONPath standard as defined in [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html).
 
 Before version 2.0 the extension used [brunerd's jsonpath engine](https://github.com/brunerd/jsonpath). That version did not implement the full JSONPath standard. Queries created with the old engine may need to be adjusted to work with the new engine.
 

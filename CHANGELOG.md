@@ -5,6 +5,19 @@ All notable changes to JSONPath Notebook will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2024-03-21
+
+### Breaking Changes
+
+JSONPath Notebook is now fully compliant with the [JSONPath proposed standard](https://www.rfc-editor.org/rfc/rfc9535.html).
+
+
+Most existing queries should work without any changes. However, some queries which are not valid according to the standard may need to be adjusted.
+
+### Added
+- Ignore whitespace characters and line terminators before and after the JSONPath expression
+
+
 ## [1.2.1] - 2024-01-15
 
 ### Added

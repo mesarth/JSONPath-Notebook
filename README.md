@@ -56,6 +56,7 @@ The chosen context (input file) gets saved inside the notebook (per cell) and ca
 
 ![Switching input file Showcase](./images/context.gif)
 
+
 ### Open output
 
 The result of a query can be opened in a new file by clicking the button `Open output in new tab` in the lower left of the cell.
@@ -68,6 +69,64 @@ JSONPath Notebook supports Markdown formatted cells. To add a new Markdown cell 
 
 ![Markdown Showcase](./images/markdown.gif)
 
+## JSONPath Syntax
+
+See [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535) for the full JSONPath standard.
+
+<details>
+  <summary>Here are some examples:</summary>
+
+```json
+{ "store": {
+    "book": [
+      { "category": "reference",
+        "author": "Nigel Rees",
+        "title": "Sayings of the Century",
+        "price": 8.95
+      },
+      { "category": "fiction",
+        "author": "Evelyn Waugh",
+        "title": "Sword of Honour",
+        "price": 12.99
+      },
+      { "category": "fiction",
+        "author": "Herman Melville",
+        "title": "Moby Dick",
+        "isbn": "0-553-21311-3",
+        "price": 8.99
+      },
+      { "category": "fiction",
+        "author": "J. R. R. Tolkien",
+        "title": "The Lord of the Rings",
+        "isbn": "0-395-19395-8",
+        "price": 22.99
+      }
+    ],
+    "bicycle": {
+      "color": "red",
+      "price": 399
+    }
+  }
+}
+```
+
+| JSONPath                                    | Intended Result |
+----------------------------------------------|------------------
+| $.store.book[*].author                      | the authors of all books in the store |
+| $..author                                   |	all authors |
+| $.store.*	                                  | all things in the store, which are some books and a red bicycle |
+| $.store..price                              | the prices of everything in the store |
+| $..book[2]                                  | the third book |
+| $..book[2].author	                          | the third book's author |
+| $..book[2].publisher	                      | empty result: the third book does not have a "publisher" member |
+| $..book[-1]	                                | the last book in order |
+| <span>$..book[0,1] <br> $..book[:2]</span>  | the first two books |
+| $..book[?@.isbn]	                          | all books with an ISBN number |
+| $..book[?@.price<10]	                      | all books cheaper than 10 |
+| $..*	                                      | all member values and array elements contained in the input value |
+
+</details>
+
 ## Extension Settings
 
 ### `jsonpath-notebook.useRelativePaths`
@@ -78,6 +137,12 @@ When set to `true` the notebook will save the paths to input files relative to t
 | ------- | ------- |
 | boolean | true    |
 
+## JSONPath engine
+
+JSONPath Notebook uses the [json-p3](https://github.com/jg-rp/json-p3) JSONPath engine for querying JSON files. The engine follows the JSONPath standard as defined in [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535).
+
+Before version 2.0 the extension used [brunerd's jsonpath engine](https://github.com/brunerd/jsonpath). That version did not implement the full JSONPath standard. Queries created with the old engine may need to be adjusted to work with the new engine.
+
 ## Release Notes
 
 See [Changelog.md](https://github.com/mesarth/JSONPath-Notebook/blob/main/CHANGELOG.md)
@@ -85,10 +150,3 @@ See [Changelog.md](https://github.com/mesarth/JSONPath-Notebook/blob/main/CHANGE
 ## Issue Reporting and Feature Requests
 
 Found a bug? Have a feature request? Reach out on our [GitHub Issues page](https://github.com/mesarth/JSONPath-Notebook/issues).
-
-## JSONPath engines used
-
-- Default: [https://github.com/brunerd/jsonpath](https://github.com/brunerd/jsonpath)
-- more engine options coming soon
-
-Note: Because the standardization of JSONPath is [still ongoing](https://datatracker.ietf.org/wg/jsonpath/about/), current engine implementations differ in syntax and functionality.

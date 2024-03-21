@@ -100,7 +100,7 @@ export class Controller {
       const worker = new Worker(join(__filename, '../worker.js'), {
         workerData: {
           input: inputContent,
-          expression: cell.document.getText()
+          expression: cell.document.getText().trim()
         }
       });
       worker.on('message', (result: any) => {

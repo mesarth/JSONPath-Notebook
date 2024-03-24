@@ -5,6 +5,11 @@ All notable changes to JSONPath Notebook will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2024-03-24
+
+### Changed
+The result of a query is now always an array, even if the query returns a single node. The JSONPath standard does not specify how this should be represented. This change makes the behavior more predictable and consistent with other JSONPath tools.
+
 ## [2.0.0] - 2024-03-21
 
 ### Breaking Changes

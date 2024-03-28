@@ -9,9 +9,14 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       return [];
     }
 
-    const items: vscode.NotebookCellStatusBarItem[] = [];
+    const items: (vscode.NotebookCellStatusBarItem | undefined)[] = [
+      this.changeContextItem(cell),
+      this.openOutputItem(cell)
+    ];
+    return items.filter(item => item !== undefined) as vscode.NotebookCellStatusBarItem[];
+  }
 
-    // change context
+  changeContextItem(cell: vscode.NotebookCell): vscode.NotebookCellStatusBarItem {
     const itemContent = {
       text: '$(search-new-editor) Select input file (context)',
       tooltip: 'Select an input file (context) for this cell'
@@ -30,10 +35,10 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       command: `${Config.EXTENSION_ID}.changeContext`,
       arguments: [cell.index]
     };
-    items.push(item);
+    return item;
+  }
 
-
-    // open output in new tab
+  openOutputItem(cell: vscode.NotebookCell): vscode.NotebookCellStatusBarItem | undefined {
     if (cell.outputs.length > 0) {
       const item = new vscode.NotebookCellStatusBarItem('$(output) Open output in new tab', vscode.NotebookCellStatusBarAlignment.Left);
       item.tooltip = 'Open the JSON result of the query in a new tab';
@@ -42,9 +47,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
         command: `${Config.EXTENSION_ID}.openOutput`,
         arguments: [cell.index]
       };
-      items.push(item);
+      return item;
     }
-
-    return items;
   }
 }

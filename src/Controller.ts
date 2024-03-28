@@ -94,13 +94,15 @@ export class Controller {
       execution.end(false, Date.now());
       return;
     }
+    const useExtendedSyntax = Utils.doesCellUseExtendedSyntax(cell);
 
     // execute JSONPath query in worker thread
     if (isMainThread) {
       const worker = new Worker(join(__filename, '../worker.js'), {
         workerData: {
           input: inputContent,
-          expression: cell.document.getText().trim()
+          expression: cell.document.getText().trim(),
+          useExtendedSyntax
         }
       });
       worker.on('message', (result: any) => {

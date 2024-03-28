@@ -1,5 +1,3 @@
-<!-- Run JSONPath queries inside VS Code notebooks (also known as Jupyter Notebooks).  -->
-
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook">
     <img width="150" height="150" src="./images/icon.png" alt="JSONPath Notebook" width="200" />
@@ -8,7 +6,7 @@
 <p align="center">
   <h1 align="center">JSONPath Notebook<br>for Visual Studio Code</h1>
   <p align="center">
-    A Visual Studio Code Extension for running JSONPath queries inside Notebooks (also known as Jupyter Notebooks).
+    A Visual Studio Code Extension for running JSONPath queries inside Notebooks.
   </p>
 </p>
 
@@ -16,8 +14,8 @@
 
 ## Features
 
-- Quickly run JSONPath queries on your JSON files
-- Annotate and organize queries using [Markdown cells](#markdown-support)
+- quickly run JSONPath queries on your JSON files
+- annotate and organize queries using [Markdown cells](#markdown-support)
 - allows you to use [different JSON input files for each cell](#switching-input-file-context)
 - [open query result](#open-output) in new document to save or further edit
 - input file (context) is remembered by each cell and stored in the notebook file
@@ -28,7 +26,7 @@
 Install the extension through the VS Code marketplace.
 [https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook](https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook) or just search for `JSONPath Notebook` inside the Extension Pane.
 
-If you prefer not use the Microsoft Marketplace you can also install the extension directly:
+If you prefer not to use the Microsoft Marketplace you can also install the extension directly:
 
 1. Go to the [Releases page](https://github.com/mesarth/JSONPath-Notebook/releases) of the Repository and download the latest `.vsix` file.
 2. Install the extension by either running the VS Code command `Developer: Install Extension from Location` and selecting the .visx file or by running the command `code --install-extension <filename>.visx`
@@ -45,14 +43,14 @@ You can also create a new notebook by using the command `JSONPath Notebook: Open
 
 ### Switching input file (context)
 
-On first execution of a cell the input file is determined as follows
+On the first execution of a cell, the input file is determined as follows
 
 - by default the JSON file opened in the editor will be used
   - if there is more than one JSON file opened in the editor, a popup appears asking to select a file
   - there is also an option in this popup to select a file from the file system
 - if there is no JSON file opened, a popup appears asking to select a file
 
-The chosen context (input file) gets saved inside the notebook (per cell) and can be changed any time by clicking on the corresponding button in the lower right of the cell.
+The chosen context (input file) gets saved inside the notebook (per cell) and can be changed at any time by clicking on the corresponding button in the lower right of the cell.
 
 ![Switching input file Showcase](./images/context.gif)
 

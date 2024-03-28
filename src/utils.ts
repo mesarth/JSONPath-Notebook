@@ -65,6 +65,17 @@ export class Utils {
     }
   };
 
+  static doesCellUseExtendedSyntax = (cell: vscode.NotebookCell): boolean => {
+    const syntaxMode = vscode.workspace.getConfiguration('jsonpath-notebook').get<string>('defaultSyntaxMode', "Standard syntax");
+    return cell.metadata.extendedSyntax ?? syntaxMode === "Extended syntax";
+  }
+
+  static toggleSyntaxMode = async (cellIndex: number) => {
+    const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
+    const extendedSyntax = cell?.metadata.extendedSyntax ?? false;
+    await Utils.updateCellMetadata(cellIndex, { extendedSyntax: !extendedSyntax });
+  }
+
   static updateCellMetadata = async (cellIndex: number, newCellMetadata: { [key: string]: any; }) => {
     const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
     if (!cell) { return; };

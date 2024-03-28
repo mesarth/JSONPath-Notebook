@@ -13,6 +13,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(`${Config.EXTENSION_ID}.openOutput`, (cellIndex: number) => Utils.openCellOutput(cellIndex)),
 		vscode.commands.registerCommand(`${Config.EXTENSION_ID}.openNewNotebook`, () => Utils.openNewNotebook()),
 		vscode.commands.registerCommand(`${Config.EXTENSION_ID}.getContext`, () => context),
+		vscode.commands.registerCommand(`${Config.EXTENSION_ID}.toggleSyntaxMode`, (cellIndex: number) => Utils.toggleSyntaxMode(cellIndex)),
+
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(Config.NOTEBOOK_TYPE, new CellStatusProvider())
 	);
 	Utils.showFirstTimeInfo();

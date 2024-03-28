@@ -84,6 +84,19 @@
           "type": "boolean",
           "default": true,
           "description": "Save relative paths instead of absolute paths for input .json files (context) in notebook file."
+        },
+        "jsonpath-notebook.defaultSyntaxMode": {
+          "type": "string",
+          "default": "Standard syntax",
+          "markdownDescription": "Set the syntax mode which gets set by default for JSONPath notebook cells. Standard syntax only allows standard compliant JSONPath syntax. Extended syntax mode allows additional non-standard syntax. This setting can be overridden per cell. See [JSONPath Notebook documentation](https://github.com/mesarth/jsonpath-notebook) for more information about the syntax modes.",
+          "enum": [
+            "Extended syntax",
+            "Standard syntax"
+          ],
+          "enumDescriptions": [
+            "Extended syntax: Allows additional non-standard syntax. This may break compatibility with other JSONPath implementations",
+            "Standard syntax: Only allows standard compliant JSONPath syntax"
+          ]
         }
       }
     }

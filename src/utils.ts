@@ -65,21 +65,25 @@ export class Utils {
     }
   };
 
-  static changeContext = async (cellIndex: number, context: vscode.Uri) => {
+  static updateCellMetadata = async (cellIndex: number, newCellMetadata: { [key: string]: any; }) => {
     const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
     if (!cell) { return; };
 
-    // get correct path format based on setting
-    const selectedFileUri = Utils.getPreferredPathFormatFromUri(context);
-
-    // create workspace edit to update tag
     const edit = new vscode.WorkspaceEdit();
     const nbEdit = vscode.NotebookEdit.updateCellMetadata(cell.index, {
       ...cell.metadata,
-      selectedFileUri
-    });
+      ...newCellMetadata
+    }
+    );
     edit.set(cell.notebook.uri, [nbEdit]);
     await vscode.workspace.applyEdit(edit);
+  };
+
+  static changeContext = async (cellIndex: number, context: vscode.Uri) => {
+    // get correct path format based on setting
+    const selectedFileUri = Utils.getPreferredPathFormatFromUri(context);
+
+    await Utils.updateCellMetadata(cellIndex, { selectedFileUri });
   };
 
   private static showJsonFileSelector = async () => {

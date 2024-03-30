@@ -18,4 +18,5 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(Config.NOTEBOOK_TYPE, new CellStatusProvider())
 	);
 	Utils.showFirstTimeInfo();
+	Utils.registerNotebookChangeListener();
 }

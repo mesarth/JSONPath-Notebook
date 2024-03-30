@@ -72,7 +72,8 @@ export class Utils {
 
   static toggleSyntaxMode = async (cellIndex: number) => {
     const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(cellIndex);
-    const extendedSyntax = cell?.metadata.extendedSyntax ?? false;
+    if (!cell) { return; }
+    const extendedSyntax = this.doesCellUseExtendedSyntax(cell);
     await Utils.updateCellMetadata(cellIndex, { extendedSyntax: !extendedSyntax });
   }
 
@@ -210,6 +211,22 @@ export class Utils {
   static getContext = async () => {
     return await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.getContext`) as vscode.ExtensionContext;
   };
+
+  static registerNotebookChangeListener = async () => {
+    vscode.workspace.onDidChangeNotebookDocument((event) => {
+      event.contentChanges.forEach(change => {
+        change.addedCells.forEach(async cell => {
+          await Utils.setInitialCellMetadata(cell);
+        });
+      });
+    });
+  };
+
+  static setInitialCellMetadata = async (cell: vscode.NotebookCell) => {
+    if (cell.kind !== vscode.NotebookCellKind.Code) return;
+    const extendedSyntax = Utils.doesCellUseExtendedSyntax(cell);
+    await Utils.updateCellMetadata(cell.index, { extendedSyntax: extendedSyntax });
+  }
 }
 
 

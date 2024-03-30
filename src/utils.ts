@@ -67,7 +67,7 @@ export class Utils {
 
   static doesCellUseExtendedSyntax = (cell: vscode.NotebookCell): boolean => {
     const syntaxMode = vscode.workspace.getConfiguration('jsonpath-notebook').get<string>('defaultSyntaxMode', "Standard syntax");
-    return cell.metadata.extendedSyntax ?? syntaxMode === "Extended syntax";
+    return cell.metadata?.extendedSyntax ?? syntaxMode === "Extended syntax";
   }
 
   static toggleSyntaxMode = async (cellIndex: number) => {

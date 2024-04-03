@@ -99,7 +99,63 @@
           ]
         }
       }
-    }
+    },
+    "walkthroughs": [
+      {
+        "id": "jsonpathNotebookWelcome",
+        "title": "Get Started with JSONPath Notebook",
+        "description": "Your first steps to set up a notebook with all the features that the JSONPath Notebook Extension has to offer!",
+        "steps": [
+          {
+            "id": "create",
+            "title": "Create or open a JSONPath Notebook",
+            "description": "Right click in the file explorer and create a new file with an .jsonpath-notebook extension. Or, open the [Command Palette](command:workbench.action.showCommands) and run the command \n**JSONPath Notebook: Open new Notebook**.\n[Open new JSONPath Notebook](command:toSide:jsonpath-notebook.openNewNotebook)\n If you have an existing notebook file, you can just open it.",
+            "completionEvents": [
+              "onCommand:jsonpath-notebook.openNewNotebook"
+            ],
+            "media": {
+              "image": "images/create-notebook.gif",
+              "altText": "Create new notebook"
+            }
+          },
+          {
+            "id": "queries",
+            "title": "Add and Execute JSONPath queries",
+            "description": "To add a new JSONPath query, add a new code cell to the notebook by pressing the\n **+ Code** button or run the command **Notebook: Insert Code Cell Above/Below**.\n\n To run a JSONPath cell press the $(notebook-execute) button or run the command **Notebook: Execute Cell**.\nTo run all cells in a notebook press the $(notebook-execute-all) button or run the command **Notebook: Run All**.",
+            "media": {
+              "image": "images/intro.gif",
+              "altText": "Add and Execute JSONPath queries"
+            }
+          },
+          {
+            "id": "context",
+            "title": "Select the Input File",
+            "description": "JSONPath Notebook tries to automatically figure out which **.json** input file you want the query to run on.\nIf there is a single .json file open in the editor, it will be selected automatically. Otherwise, you will be asked to select a file. \n\nThe input file can be changed for each cell by clicking on the corresponding button in the lower right of the cell.",
+            "media": {
+              "image": "images/context.gif",
+              "altText": "Select the Input File"
+            }
+          },
+          {
+            "id": "markdown",
+            "title": "Create a Markdown Cell",
+            "description": "JSONPath Notebook supports Markdown formatted cells. To add a new Markdown cell press the\n **+ Markdown** button or run the command **Notebook: Insert Markdown Cell Above/Below**.\n For an introduction to the Markdown syntax see [Github Markdown Guide](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#quoting-code).",
+            "media": {
+              "image": "images/markdown.gif",
+              "altText": "Create a Markdown Cell"
+            }
+          },
+          {
+            "id": "learnMore",
+            "title": "Learn more!",
+            "description": "Explore all the features the JSONPath Notebook Extension has to offer by checking out the documentation.\n[Learn more](https://github.com/mesarth/JSONPath-Notebook/)",
+            "media": {
+              "markdown": "/resources/empty.md"
+            }
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

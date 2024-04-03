@@ -3,13 +3,8 @@
 import * as vscode from 'vscode';
 import { assert, expect } from 'chai';
 import { Config, Utils } from '../../utils';
-const path = require('upath');
+import { getTestFileUri } from './util';
 // import * as myExtension from '../../extension';
-
-const getTestFileUri = (relativePath: string) => {
-	const workspacePath = __dirname + '../../../..//src/test/suite/files/';
-	return vscode.Uri.file(path.join(workspacePath, relativePath));
-};
 
 describe('Command Tests', async () => {
 	vscode.window.showInformationMessage('Start all tests.');
@@ -50,5 +45,34 @@ describe('Command Tests', async () => {
 		await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openOutput`, 0);
 		const openedOutput = JSON.parse(vscode.window.activeTextEditor?.document.getText() ?? "null");
 		expect(openedOutput).to.deep.equal(output);
+	});
+
+
+	describe('toggleSyntaxMode', async () => {
+		const input = [true, false];
+		input.forEach(async (extendedSyntax) => {
+			it(`toggles syntax mode - extendedSyntax: ${extendedSyntax}`, async () => {
+				//prepare notebook
+				const inputDocumentUri = getTestFileUri('/input/bookstore.json');
+				const notebookData = new vscode.NotebookData([
+					{
+						kind: vscode.NotebookCellKind.Code,
+						languageId: Config.LANGUAGE_ID,
+						value: '$..book[?(@.price<10)]',
+						metadata: {
+							"selectedFileUri": inputDocumentUri.path,
+							extendedSyntax
+						}
+					}
+				]);
+				const document = await vscode.workspace.openNotebookDocument(Config.NOTEBOOK_TYPE, notebookData);
+				await vscode.window.showNotebookDocument(document);
+
+				const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(0);
+				expect(cell?.metadata?.extendedSyntax).to.equal(extendedSyntax);
+				await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.toggleSyntaxMode`, 0);
+				expect(cell?.metadata?.extendedSyntax).to.not.equal(extendedSyntax);
+			});
+		});
 	});
 });

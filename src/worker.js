@@ -1,6 +1,8 @@
 import { parentPort, workerData } from 'worker_threads';
-import { jsonpath } from "json-p3";
+import { JSONPathEnvironment } from "json-p3";
 
-const result = jsonpath.query(workerData.expression, workerData.input);
+const useExtendedSyntax = workerData?.useExtendedSyntax ?? false;
+const env = new JSONPathEnvironment({ strict: !useExtendedSyntax });
+const result = env.query(workerData.expression, workerData.input);
 parentPort.postMessage(result.values());
 process.exit();

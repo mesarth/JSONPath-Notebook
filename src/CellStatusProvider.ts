@@ -1,6 +1,6 @@
 const path = require('upath');
 import * as vscode from 'vscode';
-import { Config } from './utils';
+import { Config, Utils } from './utils';
 
 export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvider {
   provideCellStatusBarItems(cell: vscode.NotebookCell, token: vscode.CancellationToken): vscode.ProviderResult<vscode.NotebookCellStatusBarItem | vscode.NotebookCellStatusBarItem[]> {
@@ -9,9 +9,15 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       return [];
     }
 
-    const items: vscode.NotebookCellStatusBarItem[] = [];
+    const items: (vscode.NotebookCellStatusBarItem | undefined)[] = [
+      this.changeContextItem(cell),
+      this.openOutputItem(cell),
+      this.syntaxModeItem(cell)
+    ];
+    return items.filter(item => item !== undefined) as vscode.NotebookCellStatusBarItem[];
+  }
 
-    // change context
+  changeContextItem(cell: vscode.NotebookCell): vscode.NotebookCellStatusBarItem {
     const itemContent = {
       text: '$(search-new-editor) Select input file (context)',
       tooltip: 'Select an input file (context) for this cell'
@@ -30,10 +36,10 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       command: `${Config.EXTENSION_ID}.changeContext`,
       arguments: [cell.index]
     };
-    items.push(item);
+    return item;
+  }
 
-
-    // open output in new tab
+  openOutputItem(cell: vscode.NotebookCell): vscode.NotebookCellStatusBarItem | undefined {
     if (cell.outputs.length > 0) {
       const item = new vscode.NotebookCellStatusBarItem('$(output) Open output in new tab', vscode.NotebookCellStatusBarAlignment.Left);
       item.tooltip = 'Open the JSON result of the query in a new tab';
@@ -42,9 +48,20 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
         command: `${Config.EXTENSION_ID}.openOutput`,
         arguments: [cell.index]
       };
-      items.push(item);
+      return item;
     }
+  }
 
-    return items;
+  syntaxModeItem(cell: vscode.NotebookCell): vscode.NotebookCellStatusBarItem {
+    const extendedSyntax = Utils.doesCellUseExtendedSyntax(cell);
+    const text = extendedSyntax ? '$(beaker) Extended Syntax' : '$(workspace-trusted)'
+    const item = new vscode.NotebookCellStatusBarItem(text, vscode.NotebookCellStatusBarAlignment.Right);
+    item.tooltip = (extendedSyntax ? 'Extended syntax enabled. Click to switch to standard syntax.' : 'Standard syntax enabled. Click to switch to extended syntax.') + ' Default can be set in settings.';
+    item.command = {
+      title: "Toggle Syntax Mode",
+      command: `${Config.EXTENSION_ID}.toggleSyntaxMode`,
+      arguments: [cell.index]
+    };
+    return item;
   }
 }

@@ -84,6 +84,19 @@
           "type": "boolean",
           "default": true,
           "description": "Save relative paths instead of absolute paths for input .json files (context) in notebook file."
+        },
+        "jsonpath-notebook.defaultSyntaxMode": {
+          "type": "string",
+          "default": "Standard syntax",
+          "markdownDescription": "Sets the **default syntax mode** for new notebook cells. The syntax mode can be changed for each notebook cell by clicking on the respective icon in the cell's status bar.\n\nStandard syntax mode allows only standard-compliant JSONPath syntax. Extended syntax mode allows additional non-standard syntax, such as the keys selector `~` or the current key identifier `#`.\n\nTake a look at the [JSON P3 documentation](https://jg-rp.github.io/json-p3/guides/jsonpath-extra) for more information about the supported syntax.",
+          "enum": [
+            "Extended syntax",
+            "Standard syntax"
+          ],
+          "enumDescriptions": [
+            "Extended syntax: Allows additional non-standard syntax. This may break compatibility with other JSONPath implementations.",
+            "Standard syntax: Allows only standard compliant JSONPath syntax."
+          ]
         }
       }
     }
@@ -115,7 +128,7 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
-    "json-p3": "^1.1.1",
+    "json-p3": "^1.2.0",
     "upath": "^2.0.1"
   },
   "packageManager": "npm@4.1.1"

@@ -2,7 +2,7 @@
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 import { expect } from 'chai';
-import { Config } from '../../utils';
+import { Config, Utils } from '../../utils';
 const path = require('upath');
 // import * as myExtension from '../../extension';
 
@@ -54,5 +54,41 @@ describe('E2E Tests', async () => {
 		const expectedOutputContent = expectedOutput.getText();
 
 		expect(JSON.parse(expectedOutputContent)).to.deep.equal(JSON.parse(output));
+	});
+
+	describe('New cell has correct syntax mode', async () => {
+		const input = ["Standard syntax", "Extended syntax"];
+		input.forEach(async (syntaxMode) => {
+			it(`New cell has correct syntax mode - ${syntaxMode}`, async () => {
+				let settings = vscode.workspace.getConfiguration(Config.EXTENSION_ID);
+				await settings.update('defaultSyntaxMode', syntaxMode);
+
+				await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openNewNotebook`);
+				await vscode.commands.executeCommand('notebook.cell.insertCodeCellBelow');
+				await delay(500);
+				const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(0);
+				const extendedSyntax = cell?.metadata?.extendedSyntax;
+				expect(extendedSyntax).to.equal(syntaxMode === "Extended syntax");
+			});
+		});
+	});
+
+	describe('Cell execution respects syntax mode', async () => {
+		const input = [true, false];
+		input.forEach(async (extendedSyntax) => {
+			it(`Cell execution respects syntax mode - ${extendedSyntax}`, async () => {
+				const uri = getTestFileUri('/notebooks/extendedSyntax.jsonpath-notebook');
+				const document = await vscode.workspace.openNotebookDocument(uri);
+
+				await vscode.window.showNotebookDocument(document);
+				const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(0);
+				await Utils.updateCellMetadata(0, { extendedSyntax });
+				await vscode.commands.executeCommand('notebook.execute', document.uri);
+				await delay(500);
+
+				const success = cell?.executionSummary?.success;
+				expect(success).to.equal(extendedSyntax);
+			});
+		});
 	});
 });

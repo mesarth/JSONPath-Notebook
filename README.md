@@ -16,10 +16,11 @@
 
 - quickly run JSONPath queries on your JSON files
 - annotate and organize queries using [Markdown cells](#markdown-support)
-- allows you to use [different JSON input files for each cell](#switching-input-file-context)
-- [open query result](#open-output) in new document to save or further edit
-- input file (context) is remembered by each cell and stored in the notebook file
+- allows you to use a [different .json input file for each query](#switching-input-file-context)
+- [open query result](#open-output) in a new document to save or further edit
+- 100% compliant with the JSONPath Standard [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html)
 - store and share notebook files `.jsonpath-notebook`
+- switch between standard compliant syntax and [extended syntax](#extended-syntax)
 
 ## Installation
 
@@ -66,6 +67,16 @@ The result of a query can be opened in a new file by clicking the button `Open o
 JSONPath Notebook supports Markdown formatted cells. To add a new Markdown cell press the button `+ Markdown` or run the command `Notebook: Insert Markdown Cell Above/Below`. For an introduction to the Markdown syntax see [Github Markdown Guide](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#quoting-code).
 
 ![Markdown Showcase](./images/markdown.gif)
+
+### Extended Syntax Mode
+
+JSONPath Notebook aims to be fully compliant with the JSONPath Standard [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html). However, some use cases may require functionality that is not part of the standard. JSONPath Notebook provides the ability to switch to an extended syntax mode, which supports additional functionality. 
+
+Standard syntax mode allows only [standard-compliant](https://www.rfc-editor.org/rfc/rfc9535.html) JSONPath syntax. Extended syntax mode allows additional non-standard syntax, such as the keys selector operator `~` or the current key identifier `#`. Take a look at the [JSON P3 documentation](https://jg-rp.github.io/json-p3/guides/jsonpath-extra) for more information about the supported syntax.
+
+The syntax mode can be changed for each notebook cell by clicking on the respective icon in the cell's status bar. The default setting can be changed in the [Settings](#default-syntax-mode).
+
+![Extended Syntax Showcase](./images/extended-syntax.gif)
 
 ## JSONPath Syntax
 
@@ -127,17 +138,25 @@ See [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535) for the full JSONPath sta
 
 ## Extension Settings
 
-### `jsonpath-notebook.useRelativePaths`
+### Use Relative Paths
 
 When set to `true` the notebook will save the paths to input files relative to the location of the notebook file itself. This is particularly useful for sharing notebooks and input files as a package because it ensures that the links to input files will work on different machines and directories.
 
-| Type    | Default |
-| ------- | ------- |
-| boolean | true    |
+| Setting ID                         | Options          | Default |
+|------------------------------------|------------------| ------- |
+|`jsonpath-notebook.useRelativePaths`| `true` or `false`| `true`  |
+
+### Default Syntax Mode
+
+Sets the [default syntax](#extended-syntax-mode) mode for new notebook cells.
+
+| Setting ID                          | Options                              | Default         |
+|-------------------------------------|--------------------------------------|-----------------|
+|`jsonpath-notebook.defaultSyntaxMode`|`Standard syntax` or `Extended syntax`|`Standard syntax`|
 
 ## JSONPath engine
 
-JSONPath Notebook uses the [json-p3](https://github.com/jg-rp/json-p3) JSONPath engine for querying JSON files. The engine follows the JSONPath standard as defined in [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html).
+JSONPath Notebook uses the [json-p3](https://github.com/jg-rp/json-p3) JSONPath engine for querying JSON files. The engine implements the JSONPath standard as defined in [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html).
 
 Before version 2.0 the extension used [brunerd's jsonpath engine](https://github.com/brunerd/jsonpath). That version did not implement the full JSONPath standard. Queries created with the old engine may need to be adjusted to work with the new engine.
 

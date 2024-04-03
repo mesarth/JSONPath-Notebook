@@ -14,18 +14,21 @@
 
 ## Features
 
-- quickly run JSONPath queries on your JSON files
-- annotate and organize queries using [Markdown cells](#markdown-support)
-- allows you to use a [different .json input file for each query](#switching-input-file-context)
-- [open query result](#open-output) in a new document to save or further edit
+- Quickly run JSONPath queries on your `.json` files
+- Annotate and organize queries using [Markdown cells](#markdown-support)
+- Use a [different .json input file for each query](#switching-input-file-context)
+- [Open the query result](#open-output) in a new document to save or further edit
 - 100% compliant with the JSONPath Standard [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html)
-- store and share notebook files `.jsonpath-notebook`
-- switch between standard compliant syntax and [extended syntax](#extended-syntax)
+- Store and share notebook files `.jsonpath-notebook`
+- Switch between standard-compliant syntax and [extended syntax](#extended-syntax)
 
 ## Installation
 
 Install the extension through the VS Code marketplace.
-[https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook](https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook) or just search for `JSONPath Notebook` inside the Extension Pane.
+
+[https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook](https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook) 
+
+Or just search for `JSONPath Notebook` inside the Extension Pane.
 
 If you prefer not to use the Microsoft Marketplace you can also install the extension directly:
 
@@ -36,22 +39,21 @@ If you prefer not to use the Microsoft Marketplace you can also install the exte
 
 ### Creating a new Notebook
 
-After installation a popup should appear, asking you to create a new notebook.
+Right click in the file explorer and create a new file with an `.jsonpath-notebook` extension. 
 
-You can also create a new notebook by using the command `JSONPath Notebook: Open new Notebook` or creating a file with the `.jsonpath-notebook` ending.
+Or, open the Command Palette and run the command `JSONPath Notebook: Open new Notebook`.
+
+If you have an existing notebook file, you can just open it.
 
 ![Creating a new Notebook Showcase](./images/create-notebook.gif)
 
 ### Switching input file (context)
 
-On the first execution of a cell, the input file is determined as follows
+JSONPath Notebook tries to automatically figure out which `.json` input file you want the query to run on.
 
-- by default the JSON file opened in the editor will be used
-  - if there is more than one JSON file opened in the editor, a popup appears asking to select a file
-  - there is also an option in this popup to select a file from the file system
-- if there is no JSON file opened, a popup appears asking to select a file
+If there is a single `.json` file open in the editor, it will be selected automatically. Otherwise, you will be asked to select a file.
 
-The chosen context (input file) gets saved inside the notebook (per cell) and can be changed at any time by clicking on the corresponding button in the lower right of the cell.
+The input file can be changed for each cell by clicking on the corresponding button in the lower right of the cell.
 
 ![Switching input file Showcase](./images/context.gif)
 
@@ -70,11 +72,11 @@ JSONPath Notebook supports Markdown formatted cells. To add a new Markdown cell 
 
 ### Extended Syntax Mode
 
-JSONPath Notebook aims to be fully compliant with the JSONPath Standard [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html). However, some use cases may require functionality that is not part of the standard. JSONPath Notebook provides the ability to switch to an extended syntax mode, which supports additional functionality. 
+JSONPath Notebook aims to be fully compliant with the JSONPath Standard [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html). However, certain use cases may require additional functionality not included in the standard. JSONPath Notebook gives you the ability to switch to an extended syntax mode, which supports additional functionality. 
 
 Standard syntax mode allows only [standard-compliant](https://www.rfc-editor.org/rfc/rfc9535.html) JSONPath syntax. Extended syntax mode allows additional non-standard syntax, such as the keys selector operator `~` or the current key identifier `#`. Take a look at the [JSON P3 documentation](https://jg-rp.github.io/json-p3/guides/jsonpath-extra) for more information about the supported syntax.
 
-The syntax mode can be changed for each notebook cell by clicking on the respective icon in the cell's status bar. The default setting can be changed in the [Settings](#default-syntax-mode).
+Syntax mode can be changed for each notebook cell by clicking on the respective icon in the cell's status bar. The default setting can be changed in the [Settings](#default-syntax-mode).
 
 ![Extended Syntax Showcase](./images/extended-syntax.gif)
 
@@ -140,7 +142,11 @@ See [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535) for the full JSONPath sta
 
 ### Use Relative Paths
 
-When set to `true` the notebook will save the paths to input files relative to the location of the notebook file itself. This is particularly useful for sharing notebooks and input files as a package because it ensures that the links to input files will work on different machines and directories.
+This setting determines how file paths are stored for each notebook cell that references an input file. When enabled, file paths are saved relative to the notebook's location. When disabled, absolute file paths are used instead.
+
+Relative file paths are generally preferred because they make the notebook more portable. This allows you to move the notebook and input files together without breaking the file references.
+
+Absolute file paths, on the other hand, contain the full path from the root directory. This can be useful if you want to reference files in specific, fixed locations, regardless of where the notebook is moved.
 
 | Setting ID                         | Options          | Default |
 |------------------------------------|------------------| ------- |
@@ -148,7 +154,7 @@ When set to `true` the notebook will save the paths to input files relative to t
 
 ### Default Syntax Mode
 
-Sets the [default syntax](#extended-syntax-mode) mode for new notebook cells.
+Sets the default [syntax mode](#extended-syntax-mode) for new notebook cells.
 
 | Setting ID                          | Options                              | Default         |
 |-------------------------------------|--------------------------------------|-----------------|
@@ -158,7 +164,7 @@ Sets the [default syntax](#extended-syntax-mode) mode for new notebook cells.
 
 JSONPath Notebook uses the [json-p3](https://github.com/jg-rp/json-p3) JSONPath engine for querying JSON files. The engine implements the JSONPath standard as defined in [RFC 9535](https://www.rfc-editor.org/rfc/rfc9535.html).
 
-Before version 2.0 the extension used [brunerd's jsonpath engine](https://github.com/brunerd/jsonpath). That version did not implement the full JSONPath standard. Queries created with the old engine may need to be adjusted to work with the new engine.
+Before version 2.0, the extension used [brunerd's jsonpath engine](https://github.com/brunerd/jsonpath). That version did not implement the full JSONPath standard. Queries created with the old engine may need to be adjusted to work with the new engine.
 
 ## Release Notes
 

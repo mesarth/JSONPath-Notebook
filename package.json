@@ -88,7 +88,7 @@
         "jsonpath-notebook.defaultSyntaxMode": {
           "type": "string",
           "default": "Standard syntax",
-          "markdownDescription": "Sets the **default syntax mode** for new notebook cells. The syntax mode can be changed for each notebook cell by clicking on the respective icon in the cell's status bar.\n\nStandard syntax allows only standard-compliant JSONPath syntax. Extended syntax allows additional non-standard syntax, such as the keys selector operator `~` or the current key identifier `#`.\n\nTake a look at the [documentation](https://github.com/mesarth/jsonpath-notebook) for more information about syntax modes.",
+          "markdownDescription": "Sets the **default syntax mode** for new notebook cells. The syntax mode can be changed for each notebook cell by clicking on the respective icon in the cell's status bar.\n\nStandard syntax mode allows only standard-compliant JSONPath syntax. Extended syntax mode allows additional non-standard syntax, such as the keys selector `~` or the current key identifier `#`.\n\nTake a look at the [JSON P3 documentation](https://jg-rp.github.io/json-p3/guides/jsonpath-extra) for more information about the supported syntax.",
           "enum": [
             "Extended syntax",
             "Standard syntax"

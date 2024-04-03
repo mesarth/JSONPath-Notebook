@@ -1,0 +1,1 @@
+<!-- this is used to enable an empty media pane for the walkthrough defined in package.json -->

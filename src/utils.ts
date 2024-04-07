@@ -49,11 +49,14 @@ export class Utils {
     return filePath;
   };
 
-  static getContextUriFromCell = (cell: vscode.NotebookCell): vscode.Uri => {
+  static getContextUriFromCell = (cell: vscode.NotebookCell): vscode.Uri | undefined => {
     const notebookUri = cell.document.uri;
     const notebookPath = notebookUri.path;
 
     const selectedFileUri = cell.metadata.selectedFileUri;
+    if (!selectedFileUri) {
+      return undefined;
+    }
 
     if (path.isAbsolute(selectedFileUri)) {
       return vscode.Uri.parse(selectedFileUri);

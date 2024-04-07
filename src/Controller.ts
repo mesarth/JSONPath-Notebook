@@ -35,26 +35,15 @@ export class Controller {
     }
   }
 
-  private async _doExecution(cell: vscode.NotebookCell, notebook: vscode.NotebookDocument): Promise<void> {
-    const execution = this._controller.createNotebookCellExecution(cell);
-    execution.executionOrder = ++this._executionOrder;
-    execution.start(Date.now()); // Keep track of elapsed time to execute cell.
-
-    // ask for input file if not already selected
-    if (!cell.metadata.selectedFileUri) {
-      const result = await Utils.showChangeContextQuickPick(cell.index, true);
-      if (!result) {
-        //canceled by user, exit execution
-        execution.end(false, Date.now());
-        return;
-      }
-    }
-
+  private async getSelectedFileUri(cell: vscode.NotebookCell): Promise<vscode.Uri | undefined> {
     let selectedFileUri = Utils.getContextUriFromCell(cell);
+
+    // if no file is selected, ask user to select one
     if (!selectedFileUri) {
-      //canceled by user, exit execution
-      execution.end(false, Date.now());
-      return;
+      selectedFileUri = await Utils.showChangeContextQuickPick(cell.index);
+      if (!selectedFileUri) {
+        return undefined;
+      }
     }
 
     try {
@@ -62,22 +51,26 @@ export class Controller {
       await vscode.workspace.fs.stat(selectedFileUri);
     } catch (err) {
       //file does not exist, ask user to select a different file
-      const result = await vscode.window.showErrorMessage(`File ${selectedFileUri.fsPath} does not exist`, { modal: true, detail: 'The context file for this cell was not found at the saved path. It was probably moved or deleted.' }, 'Select different file');
-      if (result) {
-        const result = await Utils.showChangeContextQuickPick(cell.index);
-        if (!result) {
-          //canceled by user, exit execution
-          execution.end(false, Date.now());
-          return;
-        }
-        selectedFileUri = result;
-      }
-      else {
-        //canceled by user, exit execution
-        execution.end(false, Date.now());
-        return;
+      const selectedFileOption = await vscode.window.showErrorMessage(`File ${selectedFileUri.fsPath} does not exist`, { modal: true, detail: 'The context file for this cell was not found at the saved path. It was probably moved or deleted.' }, 'Select different file');
+      if (selectedFileOption) {
+        selectedFileUri = await Utils.showChangeContextQuickPick(cell.index);
       }
     }
+    return selectedFileUri;
+  }
+
+  private async _doExecution(cell: vscode.NotebookCell, notebook: vscode.NotebookDocument): Promise<void> {
+    const execution = this._controller.createNotebookCellExecution(cell);
+
+    const selectedFileUri = await this.getSelectedFileUri(cell);
+    if (!selectedFileUri) {
+      execution.end(false, Date.now());
+      return;
+    }
+
+    // start execution
+    execution.executionOrder = ++this._executionOrder;
+    execution.start(Date.now()); // Keep track of elapsed time to execute cell.
 
     let inputContent = {};
     // read context file and parse as JSON    

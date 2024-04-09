@@ -108,7 +108,7 @@
         "steps": [
           {
             "id": "create",
-            "title": "Create or open a JSONPath Notebook",
+            "title": "Create or Open a JSONPath Notebook",
             "description": "Right click in the file explorer and create a new file with an .jsonpath-notebook extension. Or, open the [Command Palette](command:workbench.action.showCommands) and run the command \n**JSONPath Notebook: Open new Notebook**.\n[Open new JSONPath Notebook](command:toSide:jsonpath-notebook.openNewNotebook)\n If you have an existing notebook file, you can just open it.",
             "completionEvents": [
               "onCommand:jsonpath-notebook.openNewNotebook"
@@ -121,7 +121,7 @@
           {
             "id": "queries",
             "title": "Add and Execute JSONPath queries",
-            "description": "To add a new JSONPath query, add a new code cell to the notebook by pressing the\n **+ Code** button or run the command **Notebook: Insert Code Cell Above/Below**.\n\n To run a JSONPath cell press the $(notebook-execute) button or run the command **Notebook: Execute Cell**.\nTo run all cells in a notebook press the $(notebook-execute-all) button or run the command **Notebook: Run All**.",
+            "description": "To add a new JSONPath query, add a new code cell to the notebook by pressing the\n **+ Code** button or run the command **Notebook: Insert Code Cell Above/Below**.\n\n To run a JSONPath cell press the $(notebook-execute) button or run the command **Notebook: Execute Cell**.\nTo run all cells in a notebook press the $(notebook-execute-all) button or run the command **Notebook: Run All**.\n[Read about the JSONPath Syntax](https://github.com/mesarth/JSONPath-Notebook#jsonpath-syntax)",
             "media": {
               "image": "images/intro.gif",
               "altText": "Add and Execute JSONPath queries"

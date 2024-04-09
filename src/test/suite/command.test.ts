@@ -19,18 +19,6 @@ describe('Command Tests', async () => {
 			await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openNewNotebook`);
 			assert.equal(Config.NOTEBOOK_TYPE, vscode.window.activeNotebookEditor?.notebook.notebookType);
 		});
-
-		it('is correct Notebook - first time', async () => {
-			(await Utils.getContext()).globalState.update('jsonpath-notebook:isFirstTimeOpen', true);
-			await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openNewNotebook`);
-			assert.equal(2, vscode.window.activeNotebookEditor?.notebook.cellCount);
-		});
-
-		it('is correct Notebook - not first time', async () => {
-			(await Utils.getContext()).globalState.update('jsonpath-notebook:isFirstTimeOpen', false);
-			await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openNewNotebook`);
-			assert.equal(0, vscode.window.activeNotebookEditor?.notebook.cellCount);
-		});
 	});
 
 	it('openOutput', async () => {
@@ -74,5 +62,21 @@ describe('Command Tests', async () => {
 				expect(cell?.metadata?.extendedSyntax).to.not.equal(extendedSyntax);
 			});
 		});
+	});
+
+	describe('walkthrough', async () => {
+		const input = [[undefined, undefined, true], [undefined, '2.0.0', false], [false, undefined, false], [false, '2.0.0', false]];
+
+		input.forEach(([isFirstTimeOpen, version, shouldOpen]) => it(`shows walkthrough - firstTimeOpen: ${isFirstTimeOpen}, version: ${version}`, async () => {
+			const context = await Utils.getContext();
+			context.globalState.update(`${Config.EXTENSION_ID}:isFirstTimeOpen`, isFirstTimeOpen);
+			context.globalState.update(`${Config.EXTENSION_ID}:version`, version);
+
+			await Utils.showWalkthrough();
+
+			//check if walkthrough is open
+			const isOpen = vscode.window.tabGroups.all.flatMap(group => group.tabs).flatMap(tab => tab.label).includes('Welcome');
+			expect(isOpen).to.equal(shouldOpen);
+		}));
 	});
 });

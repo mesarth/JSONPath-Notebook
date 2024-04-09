@@ -22,6 +22,7 @@ class OpenFileItem implements vscode.QuickPickItem {
 }
 
 export class Config {
+  static readonly PUBLISHER = 'tschranz';
   static readonly NOTEBOOK_TYPE = 'jsonpath-notebook';
   static readonly LANGUAGE_ID = 'JSONPath';
   static readonly EXTENSION_ID = 'jsonpath-notebook';
@@ -191,25 +192,27 @@ export class Utils {
       }
     ]);
 
-    const firstTime = await Utils.isFirstTimeOpen();
-    if (firstTime) {
-      (await Utils.getContext()).globalState.update('jsonpath-notebook:isFirstTimeOpen', false);
-    }
-
-
-    const document = await vscode.workspace.openNotebookDocument(Config.NOTEBOOK_TYPE, firstTime ? notebookData : undefined);
+    const document = await vscode.workspace.openNotebookDocument(Config.NOTEBOOK_TYPE);
     await vscode.window.showNotebookDocument(document);
   };
 
-  static isFirstTimeOpen = async () => {
-    return (await Utils.getContext()).globalState.get(`${Config.EXTENSION_ID}:isFirstTimeOpen`) !== false;
-  };
+  static showWalkthrough = async () => {
+    const context = await Utils.getContext();
 
-  static showFirstTimeInfo = async () => {
-    if (await Utils.isFirstTimeOpen()) {
-      vscode.window.showInformationMessage('JSONPath Notebook is installed. Create a new .jsonpath-notebook file to start.', 'Create new notebook').then(selected => selected && vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openNewNotebook`));
+    // check if walkthrough has already been shown
+    //TODO: remove isFirstTimeOpen check after next release
+    if (
+      context.globalState.get(`${Config.EXTENSION_ID}:version`) === undefined &&
+      context.globalState.get(`${Config.EXTENSION_ID}:isFirstTimeOpen`) === undefined
+    ) {
+      await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.welcome`);
     }
   };
+
+  static updateVersionState = async () => {
+    const context = await Utils.getContext();
+    context.globalState.update('jsonpath-notebook:version', context.extension.packageJSON.version);
+  }
 
   static getContext = async () => {
     return await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.getContext`) as vscode.ExtensionContext;

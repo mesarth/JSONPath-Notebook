@@ -14,9 +14,17 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(`${Config.EXTENSION_ID}.openNewNotebook`, () => Utils.openNewNotebook()),
 		vscode.commands.registerCommand(`${Config.EXTENSION_ID}.getContext`, () => context),
 		vscode.commands.registerCommand(`${Config.EXTENSION_ID}.toggleSyntaxMode`, (cellIndex: number) => Utils.toggleSyntaxMode(cellIndex)),
+		vscode.commands.registerCommand(`${Config.EXTENSION_ID}.welcome`, () => vscode.commands.executeCommand('workbench.action.openWalkthrough', `${Config.PUBLISHER}.${Config.EXTENSION_ID}#jsonpathNotebookWelcome`)),
 
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(Config.NOTEBOOK_TYPE, new CellStatusProvider())
 	);
-	Utils.showFirstTimeInfo();
+
+	context.globalState.update(`${Config.EXTENSION_ID}:isFirstTimeOpen`, undefined);
+	context.globalState.update(`${Config.EXTENSION_ID}:version`, undefined);
+
+	Utils.showWalkthrough().finally(() => {
+		Utils.updateVersionState();
+	});
+
 	Utils.registerNotebookChangeListener();
 }

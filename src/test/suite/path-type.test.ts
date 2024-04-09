@@ -1,17 +1,9 @@
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
-import { Config, Utils } from '../../utils';
+import { Utils } from '../../util/utils';
+import { ExtensionInfo } from '../../util/ExtensionInfo';
 import { expect } from 'chai';
-const path = require('upath');
-// import * as myExtension from '../../extension';
-
-const getTestFileUri = (relativePath: string) => {
-	const workspacePath = __dirname + '../../../..//src/test/suite/files/';
-	return vscode.Uri.file(path.join(workspacePath, relativePath));
-};
-
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+import { Configuration } from '../../util/Configuration';
+import { getTestFileUri } from './util';
 
 describe('Path Type Tests', async () => {
 	vscode.window.showInformationMessage('Start all tests.');
@@ -24,7 +16,7 @@ describe('Path Type Tests', async () => {
 	it('Utils.getPreferredPathFormatFromUri: Use relative path for file context when useRelativePaths set to true (default)', async () => {
 		const notebookUri = getTestFileUri('/notebooks/empty.jsonpath-notebook');
 		const notebook = await vscode.workspace.openNotebookDocument(notebookUri);
-		await vscode.workspace.getConfiguration('jsonpath-notebook').update('useRelativePaths', true, true);
+		await Configuration.useRelativePaths.set(true);
 		await vscode.window.showNotebookDocument(notebook);
 
 		const contextUri = getTestFileUri('/input/bookstore.json');
@@ -50,7 +42,7 @@ describe('Path Type Tests', async () => {
 		const notebookUri = getTestFileUri('/notebooks/empty.jsonpath-notebook');
 		const notebook = await vscode.workspace.openNotebookDocument(notebookUri);
 		await vscode.window.showNotebookDocument(notebook);
-		await vscode.workspace.getConfiguration('jsonpath-notebook').update('useRelativePaths', true, true);
+		await Configuration.useRelativePaths.set(true);
 
 		const contextUri = vscode.Uri.file('Z:\\input\\bookstore.json');
 
@@ -64,7 +56,7 @@ describe('Path Type Tests', async () => {
 		const notebookUri = getTestFileUri('/notebooks/empty.jsonpath-notebook');
 		const notebook = await vscode.workspace.openNotebookDocument(notebookUri);
 		await vscode.window.showNotebookDocument(notebook);
-		await vscode.workspace.getConfiguration('jsonpath-notebook').update('useRelativePaths', false, true);
+		await Configuration.useRelativePaths.set(false);
 
 		const contextUri = getTestFileUri('/input/bookstore.json');
 
@@ -84,7 +76,7 @@ describe('Path Type Tests', async () => {
 		const edit = new vscode.WorkspaceEdit();
 		const nbEdit = vscode.NotebookEdit.insertCells(0, [{
 			kind: vscode.NotebookCellKind.Code,
-			languageId: Config.LANGUAGE_ID,
+			languageId: ExtensionInfo.LANGUAGE_ID,
 			value: '$..book[?(@.price<10)]',
 			metadata: {
 				"selectedFileUri": "../input/bookstore.json"
@@ -110,7 +102,7 @@ describe('Path Type Tests', async () => {
 		const edit = new vscode.WorkspaceEdit();
 		const nbEdit = vscode.NotebookEdit.insertCells(0, [{
 			kind: vscode.NotebookCellKind.Code,
-			languageId: Config.LANGUAGE_ID,
+			languageId: ExtensionInfo.LANGUAGE_ID,
 			value: '$..book[?(@.price<10)]',
 			metadata: {
 				"selectedFileUri": getTestFileUri('/input/bookstore.json').path

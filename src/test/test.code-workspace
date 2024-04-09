@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-		"jsonpath-notebook.defaultSyntaxMode": "Extended syntax"
+		"jsonpath-notebook.defaultSyntaxMode": "Extended syntax",
+		"jsonpath-notebook.useRelativePaths": false
 	}
 }

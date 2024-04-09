@@ -1,10 +1,10 @@
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
 import { assert, expect } from 'chai';
-import { Config, Utils } from '../../utils';
+import { Utils } from '../../util/utils';
+import { ExtensionInfo } from '../../util/ExtensionInfo';
 import { getTestFileUri } from './util';
-// import * as myExtension from '../../extension';
+import { Command } from '../../util/Command';
+import { GlobalState } from '../../util/GlobalState';
 
 describe('Command Tests', async () => {
 	vscode.window.showInformationMessage('Start all tests.');
@@ -16,8 +16,8 @@ describe('Command Tests', async () => {
 
 	describe('openNewNotebook', async () => {
 		it('is correct NotebookType', async () => {
-			await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openNewNotebook`);
-			assert.equal(Config.NOTEBOOK_TYPE, vscode.window.activeNotebookEditor?.notebook.notebookType);
+			await vscode.commands.executeCommand(Command.openNewNotebook);
+			assert.equal(ExtensionInfo.NOTEBOOK_TYPE, vscode.window.activeNotebookEditor?.notebook.notebookType);
 		});
 	});
 
@@ -30,7 +30,7 @@ describe('Command Tests', async () => {
 		const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(0);
 		const output = JSON.parse(new TextDecoder().decode(cell?.outputs?.at(0)?.items?.at(0)?.data));
 
-		await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openOutput`, 0);
+		await vscode.commands.executeCommand(Command.openOutput, 0);
 		const openedOutput = JSON.parse(vscode.window.activeTextEditor?.document.getText() ?? "null");
 		expect(openedOutput).to.deep.equal(output);
 	});
@@ -45,7 +45,7 @@ describe('Command Tests', async () => {
 				const notebookData = new vscode.NotebookData([
 					{
 						kind: vscode.NotebookCellKind.Code,
-						languageId: Config.LANGUAGE_ID,
+						languageId: ExtensionInfo.LANGUAGE_ID,
 						value: '$..book[?(@.price<10)]',
 						metadata: {
 							"selectedFileUri": inputDocumentUri.path,
@@ -53,12 +53,12 @@ describe('Command Tests', async () => {
 						}
 					}
 				]);
-				const document = await vscode.workspace.openNotebookDocument(Config.NOTEBOOK_TYPE, notebookData);
+				const document = await vscode.workspace.openNotebookDocument(ExtensionInfo.NOTEBOOK_TYPE, notebookData);
 				await vscode.window.showNotebookDocument(document);
 
 				const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(0);
 				expect(cell?.metadata?.extendedSyntax).to.equal(extendedSyntax);
-				await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.toggleSyntaxMode`, 0);
+				await vscode.commands.executeCommand(Command.toggleSyntaxMode, 0);
 				expect(cell?.metadata?.extendedSyntax).to.not.equal(extendedSyntax);
 			});
 		});
@@ -69,8 +69,8 @@ describe('Command Tests', async () => {
 
 		input.forEach(([isFirstTimeOpen, version, shouldOpen]) => it(`shows walkthrough - firstTimeOpen: ${isFirstTimeOpen}, version: ${version}`, async () => {
 			const context = await Utils.getContext();
-			context.globalState.update(`${Config.EXTENSION_ID}:isFirstTimeOpen`, isFirstTimeOpen);
-			context.globalState.update(`${Config.EXTENSION_ID}:version`, version);
+			context.globalState.update(GlobalState.isFirstTimeOpen, isFirstTimeOpen);
+			context.globalState.update(GlobalState.version, version);
 
 			await Utils.showWalkthrough();
 

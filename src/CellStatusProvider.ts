@@ -1,6 +1,7 @@
 const path = require('upath');
 import * as vscode from 'vscode';
-import { Config, Utils } from './utils';
+import { Utils } from './util/utils';
+import { Command } from './util/Command';
 
 export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvider {
   provideCellStatusBarItems(cell: vscode.NotebookCell, token: vscode.CancellationToken): vscode.ProviderResult<vscode.NotebookCellStatusBarItem | vscode.NotebookCellStatusBarItem[]> {
@@ -33,7 +34,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
     item.tooltip = itemContent.tooltip;
     item.command = {
       title: "$Change Context",
-      command: `${Config.EXTENSION_ID}.changeContext`,
+      command: Command.changeContext,
       arguments: [cell.index]
     };
     return item;
@@ -45,7 +46,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       item.tooltip = 'Open the JSON result of the query in a new tab';
       item.command = {
         title: "Open the JSON result of the query in a new tab",
-        command: `${Config.EXTENSION_ID}.openOutput`,
+        command: Command.openOutput,
         arguments: [cell.index]
       };
       return item;
@@ -59,7 +60,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
     item.tooltip = (extendedSyntax ? 'Extended syntax enabled. Click to switch to standard syntax.' : 'Standard syntax enabled. Click to switch to extended syntax.') + ' Default can be set in settings.';
     item.command = {
       title: "Toggle Syntax Mode",
-      command: `${Config.EXTENSION_ID}.toggleSyntaxMode`,
+      command: Command.toggleSyntaxMode,
       arguments: [cell.index]
     };
     return item;

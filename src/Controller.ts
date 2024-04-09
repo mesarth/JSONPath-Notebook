@@ -1,13 +1,15 @@
 import * as vscode from 'vscode';
-import { Config, Utils } from './utils';
+import { Utils } from './util/utils';
+import { ExtensionInfo } from './util/ExtensionInfo';
 import { join } from 'upath';
+import { QuickPickUtil } from './util/QuickPickUtil';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { Worker, isMainThread } = require('worker_threads');
 
 export class Controller {
   readonly controllerId = 'jsonpath-notebook-controller-id';
   readonly label = 'JSONPath Notebook';
-  readonly supportedLanguages = [Config.LANGUAGE_ID];
+  readonly supportedLanguages = [ExtensionInfo.LANGUAGE_ID];
 
   private readonly _controller: vscode.NotebookController;
   private _executionOrder = 0;
@@ -15,7 +17,7 @@ export class Controller {
   constructor() {
     this._controller = vscode.notebooks.createNotebookController(
       this.controllerId,
-      Config.NOTEBOOK_TYPE,
+      ExtensionInfo.NOTEBOOK_TYPE,
       this.label
     );
 
@@ -40,7 +42,7 @@ export class Controller {
 
     // if no file is selected, ask user to select one
     if (!selectedFileUri) {
-      selectedFileUri = await Utils.showChangeContextQuickPick(cell.index);
+      selectedFileUri = await QuickPickUtil.showChangeContextQuickPick(cell.index);
       if (!selectedFileUri) {
         return undefined;
       }
@@ -53,7 +55,7 @@ export class Controller {
       //file does not exist, ask user to select a different file
       const selectedFileOption = await vscode.window.showErrorMessage(`File ${selectedFileUri.fsPath} does not exist`, { modal: true, detail: 'The context file for this cell was not found at the saved path. It was probably moved or deleted.' }, 'Select different file');
       if (selectedFileOption) {
-        selectedFileUri = await Utils.showChangeContextQuickPick(cell.index);
+        selectedFileUri = await QuickPickUtil.showChangeContextQuickPick(cell.index);
       }
     }
     return selectedFileUri;

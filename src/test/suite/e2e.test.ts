@@ -1,15 +1,10 @@
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
 import { expect } from 'chai';
-import { Config, Utils } from '../../utils';
-const path = require('upath');
-// import * as myExtension from '../../extension';
-
-const getTestFileUri = (relativePath: string) => {
-	const workspacePath = __dirname + '../../../..//src/test/suite/files/';
-	return vscode.Uri.file(path.join(workspacePath, relativePath));
-};
+import { Utils } from '../../util/utils';
+import { ExtensionInfo } from '../../util/ExtensionInfo';
+import { Command } from '../../util/Command';
+import { Configuration } from '../../util/Configuration';
+import { getTestFileUri } from './util';
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -29,14 +24,14 @@ describe('E2E Tests', async () => {
 		const notebookData = new vscode.NotebookData([
 			{
 				kind: vscode.NotebookCellKind.Code,
-				languageId: Config.LANGUAGE_ID,
+				languageId: ExtensionInfo.LANGUAGE_ID,
 				value: '$..book[?(@.price<10)]',
 				metadata: {
 					"selectedFileUri": inputDocumentUri.path
 				}
 			}
 		]);
-		const document = await vscode.workspace.openNotebookDocument(Config.NOTEBOOK_TYPE, notebookData);
+		const document = await vscode.workspace.openNotebookDocument(ExtensionInfo.NOTEBOOK_TYPE, notebookData);
 		await vscode.window.showNotebookDocument(document);
 
 		//execute first cell
@@ -57,18 +52,18 @@ describe('E2E Tests', async () => {
 	});
 
 	describe('New cell has correct syntax mode', async () => {
-		const input = ["Standard syntax", "Extended syntax"];
+		const input = Object.values(Configuration.defaultSyntaxMode.options);
 		input.forEach(async (syntaxMode) => {
 			it(`New cell has correct syntax mode - ${syntaxMode}`, async () => {
-				let settings = vscode.workspace.getConfiguration(Config.EXTENSION_ID);
-				await settings.update('defaultSyntaxMode', syntaxMode);
+				await Configuration.defaultSyntaxMode.set(syntaxMode);
 
-				await vscode.commands.executeCommand(`${Config.EXTENSION_ID}.openNewNotebook`);
+				await vscode.commands.executeCommand(Command.openNewNotebook);
 				await vscode.commands.executeCommand('notebook.cell.insertCodeCellBelow');
 				await delay(500);
 				const cell = vscode.window.activeNotebookEditor?.notebook.cellAt(0);
 				const extendedSyntax = cell?.metadata?.extendedSyntax;
-				expect(extendedSyntax).to.equal(syntaxMode === "Extended syntax");
+
+				expect(extendedSyntax).to.equal(syntaxMode === Configuration.defaultSyntaxMode.options.extended);
 			});
 		});
 	});

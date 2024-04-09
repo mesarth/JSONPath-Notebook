@@ -1,5 +1,8 @@
 name: CI
 on:
+  merge_group:
+    types: [checks_requested]
+  pull_request:
   push:
     branches:
       - main
@@ -28,6 +31,7 @@ jobs:
       - run: npm test
         if: runner.os != 'Linux'
   package:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: test
     steps:

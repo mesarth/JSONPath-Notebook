@@ -23,9 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(ExtensionInfo.NOTEBOOK_TYPE, new CellStatusProvider())
 	);
 
-	context.globalState.update(GlobalState.isFirstTimeOpen, undefined);
-	context.globalState.update(GlobalState.version, undefined);
-
 	Utils.showWalkthrough().finally(() => {
 		Utils.updateVersionState();
 	});

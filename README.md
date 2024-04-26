@@ -3,12 +3,15 @@
     <img width="150" height="150" src="./images/icon.png" alt="JSONPath Notebook" width="200" />
   </a>
 </p>
-<p align="center">
+<div align="center">
   <h1 align="center">JSONPath Notebook<br>for Visual Studio Code</h1>
   <p align="center">
     A Visual Studio Code Extension for running JSONPath queries inside Notebooks.
   </p>
-</p>
+
+  [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/tschranz.jsonpath-notebook?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=tschranz.jsonpath-notebook)
+
+</div>
 
 ![Intro Showcase](./images/intro.gif)
 

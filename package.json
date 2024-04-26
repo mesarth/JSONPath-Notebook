@@ -66,8 +66,14 @@
       {
         "command": "jsonpath-notebook.openNewNotebook",
         "icon": "$(file)",
-        "title": "JSONPath Notebook: Open new Notebook",
-        "shortTitle": "JSONPath Notebook"
+        "title": "Open new Notebook",
+        "category": "JSONPath Notebook"
+      },
+      {
+        "command": "jsonpath-notebook.welcome",
+        "icon": "$(info)",
+        "title": "Get Started",
+        "category": "JSONPath Notebook"
       }
     ],
     "menus": {

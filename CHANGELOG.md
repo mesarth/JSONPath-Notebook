@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.0] - 2024-06-09
 
-## Added
+### Added
 - Added a walkthrough page which explains the extension's most important features. The walkthrough is opened automatically when the extension is installed for the first time. It can be opened again using the `JSONPath Notebook: Get Started` command.
 - Updated JSONPath engine (JSON P3) to version 1.3.3. See https://github.com/jg-rp/json-p3/releases for more information.
-## Fixed
+
+### Fixed
 Fixed an issue where the extension would not cancel the execution of a query when the input file could not be found and the user chose to cancel the file selection dialog.
 
 ## [2.2.0] - 2024-04-04

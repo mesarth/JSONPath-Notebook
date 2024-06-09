@@ -35,7 +35,7 @@ Or just search for `JSONPath Notebook` inside the Extension Pane.
 
 If you prefer not to use the Microsoft Marketplace you can also install the extension directly:
 
-1. Go to the [Releases page](https://github.com/mesarth/JSONPath-Notebook/releases) of the Repository and download the latest `.vsix` file.
+1. Go to the [Releases page](https://github.com/mesarth/JSONPath-Notebook/releases) of the repository and download the latest `.vsix` file.
 2. Install the extension by either running the VS Code command `Developer: Install Extension from Location` and selecting the .visx file or by running the command `code --install-extension <filename>.visx`
 
 ## Usage

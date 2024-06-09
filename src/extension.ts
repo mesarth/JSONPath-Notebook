@@ -6,10 +6,9 @@ import { Controller } from './Controller';
 import { CellStatusProvider } from './CellStatusProvider';
 import { QuickPickUtil } from './util/QuickPickUtil';
 import { Command } from './util/Command';
-import { GlobalState } from './util/GlobalState';
 
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.workspace.registerNotebookSerializer(ExtensionInfo.NOTEBOOK_TYPE, new Serializer()),
 		new Controller(),
@@ -23,9 +22,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider(ExtensionInfo.NOTEBOOK_TYPE, new CellStatusProvider())
 	);
 
-	Utils.showWalkthrough().finally(() => {
-		Utils.updateVersionState();
-	});
+	await Utils.showWalkthrough();
+	await Utils.updateVersionState();
 
-	Utils.registerNotebookChangeListener();
+	await Utils.registerNotebookChangeListener();
 }

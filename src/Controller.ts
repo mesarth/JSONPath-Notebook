@@ -57,6 +57,9 @@ export class Controller {
       if (selectedFileOption) {
         selectedFileUri = await QuickPickUtil.showChangeContextQuickPick(cell.index);
       }
+      else {
+        return undefined;
+      }
     }
     return selectedFileUri;
   }

@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/mesarth/JSONPath-Notebook/"
   },
-  "version": "2.3.0",
+  "version": "2.4.0",
   "engines": {
     "vscode": "^1.80.0"
   },

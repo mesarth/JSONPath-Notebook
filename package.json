@@ -191,7 +191,7 @@
   },
   "dependencies": {
     "json-p3": "^2.2.2",
-    "upath": "^2.0.1"
+    "upath": "^3.0.8"
   },
   "packageManager": "npm@10.8.2"
 }

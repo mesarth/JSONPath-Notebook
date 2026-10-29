@@ -190,7 +190,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "json-p3": "^2.2.2",
+    "json-p3": "^3.0.1",
     "upath": "^2.0.1"
   },
   "packageManager": "npm@10.8.2"
